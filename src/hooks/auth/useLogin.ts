@@ -2,6 +2,7 @@ import {useMutation} from '@tanstack/react-query';
 
 import {api} from '@/services/api/client';
 import {startSession} from '@/services/auth/session';
+import {logger} from '@/utils/logger';
 
 interface LoginInput {
   email: string;
@@ -25,6 +26,9 @@ export function useLogin() {
     mutationFn: loginRequest,
     onSuccess: async data => {
       await startSession(data.user, data.accessToken, data.refreshToken);
+    },
+    onError: err => {
+      logger.error('[useLogin] failed:', err);
     },
   });
 }
