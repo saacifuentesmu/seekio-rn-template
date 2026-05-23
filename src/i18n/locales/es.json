@@ -1,0 +1,31 @@
+{
+  "appName": "Seekio RN Template",
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "signIn": "Iniciar sesión",
+    "signOut": "Cerrar sesión",
+    "loading": "Cargando…",
+    "retry": "Reintentar"
+  },
+  "screens": {
+    "login": "Iniciar sesión",
+    "home": "Inicio",
+    "devices": "Dispositivos",
+    "deviceDetail": "Dispositivo",
+    "settings": "Ajustes"
+  },
+  "auth": {
+    "email": "Correo",
+    "password": "Contraseña",
+    "emailRequired": "El correo es obligatorio",
+    "emailInvalid": "Introduce un correo válido",
+    "passwordRequired": "La contraseña es obligatoria"
+  },
+  "devices": {
+    "scanning": "Buscando…",
+    "startScan": "Iniciar búsqueda",
+    "stopScan": "Detener",
+    "empty": "No se encontraron dispositivos"
+  }
+}
