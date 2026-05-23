@@ -4,11 +4,13 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
-import {Pressable, ScrollView, StyleSheet, Text} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import * as yup from 'yup';
 
 import {Button} from '@/components/UI/Button';
 import {FormField} from '@/components/forms/FormField';
+import {appConfig} from '@/constants/appConfig';
+import {useGoogleLogin} from '@/hooks/auth/useGoogleLogin';
 import {useSignUp} from '@/hooks/auth/useSignUp';
 import {AuthStackParamList} from '@/navigation/types';
 import {useTheme} from '@/theme/ThemeProvider';
@@ -25,6 +27,7 @@ export const SignUpScreen: React.FC = () => {
   const {palette, spacing, typography} = useTheme();
   const nav = useNavigation<NativeStackNavigationProp<AuthStackParamList, 'SignUp'>>();
   const signUp = useSignUp();
+  const google = useGoogleLogin();
 
   const schema = yup.object({
     email: yup.string().required(t('auth.emailRequired')).email(t('auth.emailInvalid')),
@@ -74,6 +77,29 @@ export const SignUpScreen: React.FC = () => {
         </Text>
         <Text style={[typography.body, {color: palette.primary}]}>{t('common.signIn')}</Text>
       </Pressable>
+
+      {appConfig.googleSignIn.webClientId ? (
+        <>
+          <View style={[styles.dividerRow, {marginVertical: spacing.lg}]}>
+            <View style={[styles.dividerLine, {backgroundColor: palette.border}]} />
+            <Text style={[typography.body, {color: palette.text, marginHorizontal: spacing.md, opacity: 0.6}]}>
+              {t('auth.or')}
+            </Text>
+            <View style={[styles.dividerLine, {backgroundColor: palette.border}]} />
+          </View>
+
+          <Button
+            title={t('auth.continueWithGoogle')}
+            variant="secondary"
+            onPress={google.signIn}
+            loading={google.isPending}
+            disabled={google.isPending}
+          />
+          {google.error ? (
+            <Text style={{color: palette.error, marginTop: spacing.sm}}>{t('auth.googleSignInFailed')}</Text>
+          ) : null}
+        </>
+      ) : null}
     </ScrollView>
   );
 };
@@ -81,4 +107,6 @@ export const SignUpScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {flexGrow: 1, justifyContent: 'center'},
   linkRow: {flexDirection: 'row', justifyContent: 'center', alignItems: 'center'},
+  dividerRow: {flexDirection: 'row', alignItems: 'center'},
+  dividerLine: {flex: 1, height: StyleSheet.hairlineWidth},
 });
