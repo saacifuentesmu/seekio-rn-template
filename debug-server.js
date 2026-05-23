@@ -10,6 +10,14 @@
 //   POST /auth/forgot-password  { email }             -> { ok: true }
 //   GET  /me                    (Authorization: Bearer ...) -> { user }
 //
+// Generic CRUD (matches the RestDataStore port contract — in-memory, resets on
+// restart). `:resource` is any collection name, e.g. device_advertisements:
+//   GET    /:resource           ?field=value   -> [ {id, ...}, ... ]  (equality filter)
+//   GET    /:resource/:id                       -> {id, ...} | 404
+//   POST   /:resource           { ... }         -> {id, ...}  (id auto-assigned)
+//   PATCH  /:resource/:id       { ... }         -> {id, ...} | 404
+//   DELETE /:resource/:id                        -> 204 | 404
+//
 // Tokens are structurally-valid unsigned JWTs (alg "none") with iat/exp claims,
 // so the client's jwt-decode can read expiry. Not cryptographically signed.
 // Login accepts any non-empty credentials.
@@ -46,9 +54,10 @@ const fakeTokens = (sub = FAKE_USER.id) => ({
 });
 
 app.use((req, _res, next) => {
+  const hasQuery = Object.keys(req.query).length > 0;
   console.log(
     `[${new Date().toISOString()}] ${req.method} ${req.path}`,
-    req.body,
+    hasQuery ? {query: req.query} : req.body,
   );
   next();
 });
@@ -96,6 +105,60 @@ app.get('/me', (req, res) => {
     return res.status(401).json({error: 'unauthorized'});
   }
   res.json({user: FAKE_USER});
+});
+
+// --- Generic in-memory CRUD (RestDataStore contract) ----------------------
+// Reserved prefixes that are NOT generic collections.
+const RESERVED = new Set(['auth', 'me']);
+
+// collections[resource] = Map<id, doc>
+const collections = {};
+let nextId = 1;
+
+const coll = resource => {
+  if (!collections[resource]) collections[resource] = new Map();
+  return collections[resource];
+};
+
+app.get('/:resource', (req, res, next) => {
+  if (RESERVED.has(req.params.resource)) return next();
+  const all = [...coll(req.params.resource).values()];
+  const q = req.query || {};
+  const filtered = all.filter(doc =>
+    Object.entries(q).every(([k, v]) => String(doc[k]) === String(v)),
+  );
+  res.json(filtered);
+});
+
+app.get('/:resource/:id', (req, res, next) => {
+  if (RESERVED.has(req.params.resource)) return next();
+  const doc = coll(req.params.resource).get(req.params.id);
+  if (!doc) return res.status(404).json({error: 'not found'});
+  res.json(doc);
+});
+
+app.post('/:resource', (req, res, next) => {
+  if (RESERVED.has(req.params.resource)) return next();
+  const id = String(nextId++);
+  const doc = {id, ...(req.body || {})};
+  coll(req.params.resource).set(id, doc);
+  res.status(201).json(doc);
+});
+
+app.patch('/:resource/:id', (req, res, next) => {
+  if (RESERVED.has(req.params.resource)) return next();
+  const c = coll(req.params.resource);
+  const existing = c.get(req.params.id);
+  if (!existing) return res.status(404).json({error: 'not found'});
+  const updated = {...existing, ...(req.body || {}), id: existing.id};
+  c.set(req.params.id, updated);
+  res.json(updated);
+});
+
+app.delete('/:resource/:id', (req, res, next) => {
+  if (RESERVED.has(req.params.resource)) return next();
+  coll(req.params.resource).delete(req.params.id);
+  res.status(204).end();
 });
 
 const PORT = process.env.PORT || 3000;

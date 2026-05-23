@@ -47,6 +47,25 @@ jest.mock('@react-native-google-signin/google-signin', () => ({
   statusCodes: {SIGN_IN_CANCELLED: 'SIGN_IN_CANCELLED'},
 }));
 
+// Firebase modules ship as ESM and have no JS fallback under jest; mock the
+// callable default exports used by the firebase* backend adapters so importing
+// the composition root (services/backend/index) doesn't crash the suite.
+jest.mock('@react-native-firebase/auth', () => {
+  const authFn = jest.fn();
+  authFn.GoogleAuthProvider = {credential: jest.fn()};
+  return {__esModule: true, default: authFn};
+});
+
+jest.mock('@react-native-firebase/firestore', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
+jest.mock('@react-native-firebase/storage', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
 jest.mock('@notifee/react-native', () => ({
   __esModule: true,
   default: {
