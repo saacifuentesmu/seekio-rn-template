@@ -1,6 +1,6 @@
 import {useMutation} from '@tanstack/react-query';
 
-import {api} from '@/services/api/client';
+import {apiPublic} from '@/services/api/client';
 import {startSession} from '@/services/auth/session';
 import {logger} from '@/utils/logger';
 
@@ -17,7 +17,7 @@ interface LoginResponse {
 
 // Stub mutation. Replace endpoint to match your backend.
 async function loginRequest(input: LoginInput): Promise<LoginResponse> {
-  const res = await api.post<LoginResponse>('/auth/login', input);
+  const res = await apiPublic.post<LoginResponse>('/auth/login', input);
   return res.data;
 }
 
