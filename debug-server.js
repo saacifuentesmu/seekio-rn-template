@@ -3,12 +3,16 @@
 // `node debug-server.js` if you already have express installed.
 //
 // Endpoints:
-//   POST /auth/login    { email, password }   -> { user, accessToken, refreshToken }
-//   POST /auth/register { email, password }   -> { user, accessToken, refreshToken }
-//   POST /auth/google   { idToken }           -> { user, accessToken, refreshToken }
-//   POST /auth/refresh  { refreshToken }      -> { accessToken, refreshToken }
+//   POST /auth/login            { email, password }   -> { user, accessToken, refreshToken }
+//   POST /auth/register         { email, password }   -> { user, accessToken, refreshToken }
+//   POST /auth/google           { idToken }           -> { user, accessToken, refreshToken }
+//   POST /auth/refresh          { refreshToken }      -> { accessToken, refreshToken }
+//   POST /auth/forgot-password  { email }             -> { ok: true }
+//   GET  /me                    (Authorization: Bearer ...) -> { user }
 //
-// All endpoints return fake tokens. Login accepts any non-empty credentials.
+// Tokens are structurally-valid unsigned JWTs (alg "none") with iat/exp claims,
+// so the client's jwt-decode can read expiry. Not cryptographically signed.
+// Login accepts any non-empty credentials.
 // Set apiBaseUrls.dev in src/constants/appConfig.ts to:
 //   - http://10.0.2.2:3000   (Android emulator)
 //   - http://localhost:3000  (iOS simulator)
@@ -20,9 +24,21 @@ const app = express();
 app.use(express.json());
 
 const FAKE_USER = {id: 'debug-user-1', email: 'debug@example.com', name: 'Debug User'};
-const fakeTokens = () => ({
-  accessToken: `fake-access-${Date.now()}`,
-  refreshToken: `fake-refresh-${Date.now()}`,
+
+const b64url = obj => Buffer.from(JSON.stringify(obj)).toString('base64url');
+
+// Mint a structurally-valid (unsigned) JWT so client-side jwt-decode can read
+// the exp claim. The signature is a placeholder — this stub does not verify it.
+const jwt = (claims, ttlSeconds) => {
+  const now = Math.floor(Date.now() / 1000);
+  const header = b64url({alg: 'none', typ: 'JWT'});
+  const payload = b64url({...claims, iat: now, exp: now + ttlSeconds});
+  return `${header}.${payload}.debug-signature`;
+};
+
+const fakeTokens = (sub = FAKE_USER.id) => ({
+  accessToken: jwt({sub, type: 'access'}, 60 * 60), // 1h
+  refreshToken: jwt({sub, type: 'refresh'}, 60 * 60 * 24 * 30), // 30d
 });
 
 app.use((req, _res, next) => {
@@ -52,6 +68,19 @@ app.post('/auth/refresh', (req, res) => {
   const {refreshToken} = req.body || {};
   if (!refreshToken) return res.status(400).json({error: 'refreshToken required'});
   res.json(fakeTokens());
+});
+
+app.post('/auth/forgot-password', (req, res) => {
+  const {email} = req.body || {};
+  if (!email) return res.status(400).json({error: 'email required'});
+  // Always return ok to avoid leaking which emails exist.
+  res.json({ok: true});
+});
+
+app.get('/me', (req, res) => {
+  const auth = req.header('Authorization');
+  if (!auth || !auth.trim()) return res.status(401).json({error: 'unauthorized'});
+  res.json({user: FAKE_USER});
 });
 
 const PORT = process.env.PORT || 3000;
