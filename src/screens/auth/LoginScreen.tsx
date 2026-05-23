@@ -56,6 +56,9 @@ export const LoginScreen: React.FC = () => {
           secureTextEntry
         />
       </FormProvider>
+      <Pressable onPress={() => nav.navigate('ForgotPassword')} style={[styles.linkRow, {marginBottom: spacing.md}]}>
+        <Text style={[typography.body, {color: palette.primary}]}>{t('auth.forgotPassword')}</Text>
+      </Pressable>
       {login.isError ? (
         <Text style={{color: palette.error, marginBottom: spacing.md}}>{toErrorMessage(login.error)}</Text>
       ) : null}

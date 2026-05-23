@@ -11,6 +11,7 @@
   "screens": {
     "login": "Sign In",
     "signUp": "Sign up",
+    "forgotPassword": "Reset password",
     "home": "Home",
     "devices": "Devices",
     "deviceDetail": "Device",
@@ -28,9 +29,27 @@
     "signUp": "Sign up",
     "alreadyHaveAccount": "Already have an account?",
     "dontHaveAccount": "Don't have an account?",
+    "forgotPassword": "Forgot password?",
+    "sendResetLink": "Send reset link",
+    "resetLinkSent": "If an account exists for this email, a reset link is on the way.",
+    "backToSignIn": "Back to sign in",
     "or": "or",
     "continueWithGoogle": "Continue with Google",
     "googleSignInFailed": "Google Sign-In failed. Try again."
+  },
+  "home": {
+    "profileLoadFailed": "Failed to load profile"
+  },
+  "settings": {
+    "appearance": "Appearance",
+    "palette": "Palette",
+    "themeMode": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "paletteDefault": "Default",
+    "paletteForest": "Forest",
+    "paletteSlate": "Slate"
   },
   "devices": {
     "scanning": "Scanning…",

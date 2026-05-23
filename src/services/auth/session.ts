@@ -1,4 +1,4 @@
-import {apiPublic} from '@/services/api/client';
+import {api, apiPublic} from '@/services/api/client';
 import {SessionUser, useSessionStore} from '@/store/sessionStore';
 
 import {clearTokens, setTokens} from './tokens';
@@ -9,6 +9,15 @@ interface GoogleLoginResponse {
   user: SessionUser;
   accessToken: string;
   refreshToken: string;
+}
+
+interface MeResponse {
+  user: SessionUser;
+}
+
+export async function validateSession(): Promise<SessionUser> {
+  const res = await api.get<MeResponse>('/me');
+  return res.data.user;
 }
 
 export async function startSession(user: SessionUser, accessToken: string, refreshToken: string) {
