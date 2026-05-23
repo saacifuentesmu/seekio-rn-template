@@ -4,7 +4,7 @@ The template ships without a real backend. This guide covers two debug paths: a 
 
 ## Local stub backend
 
-A 50-line Express stub with `/auth/login`, `/auth/google`, and `/auth/refresh` lives at `debug-server.js`. All endpoints return fake tokens and accept any non-empty input.
+A small Express stub with `/auth/login`, `/auth/register` (`{email, password} -> {user, accessToken, refreshToken}`), `/auth/google`, and `/auth/refresh` lives at `debug-server.js`. All endpoints return fake tokens and accept any non-empty input.
 
 ```bash
 yarn install         # picks up express dev dep

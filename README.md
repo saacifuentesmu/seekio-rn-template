@@ -134,7 +134,7 @@ yarn android:apk:staging       # stagingRelease APK
 
 ## Capabilities
 
-**Auth + JWT** - `services/api/client.ts` wires axios with `react-native-axios-jwt` for automatic refresh. Tokens are stored in the keychain / encrypted SharedPreferences via `services/auth/tokens.ts`. The login mutation lives in `hooks/auth/useLogin.ts` - replace the endpoint to match your backend.
+**Auth + JWT** - `services/api/client.ts` wires axios with `react-native-axios-jwt` for automatic refresh. Tokens are stored in the keychain / encrypted SharedPreferences via `services/auth/tokens.ts`. The login mutation lives in `hooks/auth/useLogin.ts` - replace the endpoint to match your backend. Sign-up is wired symmetrically: `/auth/register` endpoint, `useSignUp` hook, `SignUpScreen` linked from `LoginScreen`.
 
 **BLE** - `services/ble/bleManager.ts` exposes a lazy singleton. `hooks/ble/useBleScan.ts` returns a list of devices filtered by `appConfig.bleServiceUuids`. `hooks/ble/useBleDevice.ts` handles connect / disconnect / characteristic monitoring - characteristic UUIDs are passed as arguments, so the hook stays product-agnostic.
 

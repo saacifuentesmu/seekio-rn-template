@@ -10,6 +10,7 @@
   },
   "screens": {
     "login": "Iniciar sesión",
+    "signUp": "Registrarse",
     "home": "Inicio",
     "devices": "Dispositivos",
     "deviceDetail": "Dispositivo",
@@ -18,9 +19,15 @@
   "auth": {
     "email": "Correo",
     "password": "Contraseña",
+    "passwordConfirm": "Confirmar contraseña",
     "emailRequired": "El correo es obligatorio",
     "emailInvalid": "Introduce un correo válido",
     "passwordRequired": "La contraseña es obligatoria",
+    "passwordMinLength": "La contraseña debe tener al menos 8 caracteres",
+    "passwordsMustMatch": "Las contraseñas no coinciden",
+    "signUp": "Registrarse",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "dontHaveAccount": "¿No tienes una cuenta?",
     "or": "o",
     "continueWithGoogle": "Continuar con Google",
     "googleSignInFailed": "Inicio de sesión con Google falló. Inténtalo de nuevo."

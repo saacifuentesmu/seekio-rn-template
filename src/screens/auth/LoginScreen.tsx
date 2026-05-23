@@ -1,8 +1,10 @@
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
 import {FormProvider, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, Text, View} from 'react-native';
 import * as yup from 'yup';
 
 import {Button} from '@/components/UI/Button';
@@ -10,6 +12,7 @@ import {FormField} from '@/components/forms/FormField';
 import {appConfig} from '@/constants/appConfig';
 import {useGoogleLogin} from '@/hooks/auth/useGoogleLogin';
 import {useLogin} from '@/hooks/auth/useLogin';
+import {AuthStackParamList} from '@/navigation/types';
 import {useTheme} from '@/theme/ThemeProvider';
 import {toErrorMessage} from '@/utils/errors';
 
@@ -21,6 +24,7 @@ interface LoginForm {
 export const LoginScreen: React.FC = () => {
   const {t} = useTranslation();
   const {palette, spacing, typography} = useTheme();
+  const nav = useNavigation<NativeStackNavigationProp<AuthStackParamList, 'Login'>>();
   const login = useLogin();
   const google = useGoogleLogin();
 
@@ -57,6 +61,13 @@ export const LoginScreen: React.FC = () => {
       ) : null}
       <Button title={t('common.signIn')} onPress={onSubmit} loading={login.isPending} />
 
+      <Pressable onPress={() => nav.navigate('SignUp')} style={[styles.linkRow, {marginTop: spacing.md}]}>
+        <Text style={[typography.body, {color: palette.text, opacity: 0.6}]}>
+          {t('auth.dontHaveAccount')}{' '}
+        </Text>
+        <Text style={[typography.body, {color: palette.primary}]}>{t('auth.signUp')}</Text>
+      </Pressable>
+
       {appConfig.googleSignIn.webClientId ? (
         <>
           <View style={[styles.dividerRow, {marginVertical: spacing.lg}]}>
@@ -87,4 +98,5 @@ const styles = StyleSheet.create({
   container: {flexGrow: 1, justifyContent: 'center'},
   dividerRow: {flexDirection: 'row', alignItems: 'center'},
   dividerLine: {flex: 1, height: StyleSheet.hairlineWidth},
+  linkRow: {flexDirection: 'row', justifyContent: 'center', alignItems: 'center'},
 });
