@@ -1,4 +1,4 @@
-import {api} from '@/services/api/client';
+import {apiPublic} from '@/services/api/client';
 import {SessionUser, useSessionStore} from '@/store/sessionStore';
 
 import {clearTokens, setTokens} from './tokens';
@@ -22,7 +22,7 @@ export async function endSession() {
 }
 
 export async function loginWithGoogle(idToken: string): Promise<SessionUser> {
-  const res = await api.post<GoogleLoginResponse>('/auth/google', {idToken});
+  const res = await apiPublic.post<GoogleLoginResponse>('/auth/google', {idToken});
   const {user, accessToken, refreshToken} = res.data;
   await startSession(user, accessToken, refreshToken);
   return user;
