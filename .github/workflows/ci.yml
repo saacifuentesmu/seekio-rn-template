@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Typecheck, lint, test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Typecheck
+        run: yarn typecheck
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Test
+        run: yarn test
+
+  android:
+    name: Build debug APK (dev)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: yarn
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # CI uses placeholder env values. A runtime-functional build needs real
+      # .env.dev (API URL, OAuth client IDs, Sentry DSN); a debug compile does not.
+      - name: Write placeholder .env.dev
+        run: |
+          cat > .env.dev <<'EOF'
+          ENV=dev
+          API_BASE_URL=https://api.example.com
+          SENTRY_DSN=
+          GOOGLE_WEB_CLIENT_ID=
+          GOOGLE_IOS_CLIENT_ID=
+          EOF
+
+      - name: Gradle build (devDebug)
+        run: ./gradlew assembleDevDebug
+        working-directory: android
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-dev-debug
+          path: android/app/build/outputs/apk/dev/debug/*.apk
+          if-no-files-found: error
