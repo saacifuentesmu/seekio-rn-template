@@ -41,6 +41,8 @@ yarn android:dev          # or android:staging, android:prod
 yarn ios:dev              # or ios:staging, ios:prod (requires Xcode schemes - see below)
 ```
 
+For testing the auth UI without a real backend, see [TESTING.md](TESTING.md) (local stub server + Google Sign-In end-to-end setup).
+
 ## Project Structure
 
 ```
