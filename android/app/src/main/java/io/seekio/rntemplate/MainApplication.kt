@@ -1,4 +1,4 @@
-package com.seekiorntemplate
+package io.seekio.rntemplate
 
 import android.app.Application
 import com.facebook.react.PackageList

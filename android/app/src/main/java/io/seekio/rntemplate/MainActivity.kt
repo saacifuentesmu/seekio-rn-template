@@ -1,4 +1,4 @@
-package com.seekiorntemplate
+package io.seekio.rntemplate
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
