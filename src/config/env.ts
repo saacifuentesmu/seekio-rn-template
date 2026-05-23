@@ -6,4 +6,6 @@ export const env = {
   ENV: (Config.ENV ?? 'dev') as Environment,
   API_BASE_URL: Config.API_BASE_URL ?? '',
   SENTRY_DSN: Config.SENTRY_DSN ?? '',
+  GOOGLE_WEB_CLIENT_ID: Config.GOOGLE_WEB_CLIENT_ID ?? '',
+  GOOGLE_IOS_CLIENT_ID: Config.GOOGLE_IOS_CLIENT_ID ?? '',
 };
