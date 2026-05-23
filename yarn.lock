@@ -1737,6 +1737,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/geolocation/-/geolocation-3.3.0.tgz#f6f32a6b829619ca82d0061387fd7d78fe5fa497"
   integrity sha512-7DFeuotH7m7ImoXffN3TmlGSFn1XjvsaphPort0XZKipssYbdHiKhVVWG+jzisvDhcXikUc6nbUJgddVBL6RDg==
 
+"@react-native-google-signin/google-signin@11.0.1":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-11.0.1.tgz#1bff0c8f65d3b32eac1622f68293e94137b96360"
+  integrity sha512-ZRSEd1ME31XZ+azS3Qe6TRb8NRicGmtRdD1vT4Tz2birnlTfNfRgy4qLrEKNZyMUTodA6+J2UvA2JWwT8ZQ/dw==
+
 "@react-native/assets-registry@0.74.85":
   version "0.74.85"
   resolved "https://registry.yarnpkg.com/@react-native/assets-registry/-/assets-registry-0.74.85.tgz#ae903c0c25f4d6a751d53d63245d5612c81edd98"

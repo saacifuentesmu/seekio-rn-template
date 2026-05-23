@@ -20,7 +20,10 @@
     "password": "Password",
     "emailRequired": "Email is required",
     "emailInvalid": "Enter a valid email",
-    "passwordRequired": "Password is required"
+    "passwordRequired": "Password is required",
+    "or": "or",
+    "continueWithGoogle": "Continue with Google",
+    "googleSignInFailed": "Google Sign-In failed. Try again."
   },
   "devices": {
     "scanning": "Scanning…",

@@ -9,6 +9,11 @@ export interface AppConfig {
   defaultLocale: string;
   supportedLocales: string[];
   featureFlags: {ble: boolean; maps: boolean; push: boolean};
+  googleSignIn: {
+    webClientId: string;
+    iosClientId: string;
+    offlineAccess: boolean;
+  };
 }
 
 export const appConfig: AppConfig = {
@@ -28,4 +33,14 @@ export const appConfig: AppConfig = {
   defaultLocale: 'en',
   supportedLocales: ['en', 'es'],
   featureFlags: {ble: true, maps: true, push: true},
+  googleSignIn: {
+    // OAuth 2.0 Web client ID from Google Cloud Console (required for ID token issuance
+    // on both Android and iOS). Leave empty to disable Google Sign-In.
+    webClientId: '',
+    // iOS-only: reversed-client-id URL scheme also needs to be added to ios/<App>/Info.plist
+    // under CFBundleURLTypes. See README.
+    iosClientId: '',
+    // Optional: request offline access (server-side refresh token via serverAuthCode).
+    offlineAccess: false,
+  },
 };
