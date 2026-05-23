@@ -1,17 +1,17 @@
 import {create} from 'zustand';
 import {createJSONStorage, persist} from 'zustand/middleware';
 
-import {appConfig} from '@/constants/appConfig';
 import AsyncStorage from '@/services/storage/asyncStorage';
 import {PaletteName} from '@/theme/palette';
 
 type ThemeMode = 'light' | 'dark' | 'system';
 
 interface SettingsState {
-  locale: string;
+  // null = follow OS locale; a string = explicit user choice.
+  locale: string | null;
   themeMode: ThemeMode;
   paletteName: PaletteName;
-  setLocale: (locale: string) => void;
+  setLocale: (locale: string | null) => void;
   setThemeMode: (mode: ThemeMode) => void;
   setPaletteName: (name: PaletteName) => void;
 }
@@ -19,7 +19,7 @@ interface SettingsState {
 export const useSettingsStore = create<SettingsState>()(
   persist(
     set => ({
-      locale: appConfig.defaultLocale,
+      locale: null,
       themeMode: 'system',
       paletteName: 'default',
       setLocale: locale => set({locale}),

@@ -49,7 +49,11 @@
     "themeSystem": "System",
     "paletteDefault": "Default",
     "paletteForest": "Forest",
-    "paletteSlate": "Slate"
+    "paletteSlate": "Slate",
+    "language": "Language",
+    "languageSystem": "System",
+    "languageEn": "English",
+    "languageEs": "Spanish"
   },
   "devices": {
     "scanning": "Scanning…",
