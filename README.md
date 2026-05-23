@@ -134,7 +134,11 @@ yarn android:apk:staging       # stagingRelease APK
 
 ## Capabilities
 
-**Auth + JWT** - `services/api/client.ts` wires axios with `react-native-axios-jwt` for automatic refresh. Tokens are stored in the keychain / encrypted SharedPreferences via `services/auth/tokens.ts`. The login mutation lives in `hooks/auth/useLogin.ts` - replace the endpoint to match your backend. Sign-up is wired symmetrically: `/auth/register` endpoint, `useSignUp` hook, `SignUpScreen` linked from `LoginScreen`.
+**Auth + JWT** - `services/api/client.ts` wires axios with `react-native-axios-jwt` for automatic refresh. Tokens are stored in the keychain / encrypted SharedPreferences via `services/auth/tokens.ts`. The login mutation lives in `hooks/auth/useLogin.ts` - replace the endpoint to match your backend. Sign-up is wired symmetrically: `/auth/register` endpoint, `useSignUp` hook, `SignUpScreen` linked from `LoginScreen`. Forgot-password stub: `/auth/forgot-password`, `useForgotPassword`, `ForgotPasswordScreen` linked from `LoginScreen`.
+
+**Session restore** - on cold start, `useSessionRestore` reads the stored access token (sensitive-info) and calls `GET /me` via the authenticated client; on success the session is rehydrated, on failure tokens are cleared. While restoring, `RootNavigator` renders a JS-only `SplashView` placeholder.
+
+**Theme** - multi-palette (default / forest / slate) × light / dark / system in `theme/palette.ts`. `ThemeProvider` resolves the active palette from `useSettingsStore` and `useColorScheme()`. Picker UI in `SettingsScreen` updates the theme live; `paletteName`, `themeMode`, and `locale` are persisted to AsyncStorage under `seekio.settings` via `zustand/middleware`.
 
 **BLE** - `services/ble/bleManager.ts` exposes a lazy singleton. `hooks/ble/useBleScan.ts` returns a list of devices filtered by `appConfig.bleServiceUuids`. `hooks/ble/useBleDevice.ts` handles connect / disconnect / characteristic monitoring - characteristic UUIDs are passed as arguments, so the hook stays product-agnostic.
 

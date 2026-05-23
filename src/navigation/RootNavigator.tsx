@@ -1,6 +1,8 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 
+import {SplashView} from '@/components/UI/SplashView';
+import {useSessionRestore} from '@/hooks/auth/useSessionRestore';
 import {useSessionStore} from '@/store/sessionStore';
 
 import {AppStack} from './AppStack';
@@ -10,7 +12,11 @@ import {RootStackParamList} from './types';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const RootNavigator: React.FC = () => {
+  const {status} = useSessionRestore();
   const isAuthenticated = useSessionStore(s => s.isAuthenticated);
+
+  if (status === 'restoring') return <SplashView />;
+
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       {isAuthenticated ? (

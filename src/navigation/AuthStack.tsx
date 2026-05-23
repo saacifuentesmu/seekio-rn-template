@@ -2,6 +2,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 
+import {ForgotPasswordScreen} from '@/screens/auth/ForgotPasswordScreen';
 import {LoginScreen} from '@/screens/auth/LoginScreen';
 import {SignUpScreen} from '@/screens/auth/SignUpScreen';
 
@@ -15,6 +16,7 @@ export const AuthStack: React.FC = () => {
     <Stack.Navigator>
       <Stack.Screen name="Login" component={LoginScreen} options={{title: t('screens.login')}} />
       <Stack.Screen name="SignUp" component={SignUpScreen} options={{title: t('screens.signUp')}} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{title: t('screens.forgotPassword')}} />
     </Stack.Navigator>
   );
 };

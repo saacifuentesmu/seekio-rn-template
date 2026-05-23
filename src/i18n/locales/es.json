@@ -11,6 +11,7 @@
   "screens": {
     "login": "Iniciar sesión",
     "signUp": "Registrarse",
+    "forgotPassword": "Restablecer contraseña",
     "home": "Inicio",
     "devices": "Dispositivos",
     "deviceDetail": "Dispositivo",
@@ -28,9 +29,27 @@
     "signUp": "Registrarse",
     "alreadyHaveAccount": "¿Ya tienes una cuenta?",
     "dontHaveAccount": "¿No tienes una cuenta?",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "sendResetLink": "Enviar enlace de recuperación",
+    "resetLinkSent": "Si existe una cuenta con este correo, se enviará un enlace de recuperación.",
+    "backToSignIn": "Volver a iniciar sesión",
     "or": "o",
     "continueWithGoogle": "Continuar con Google",
     "googleSignInFailed": "Inicio de sesión con Google falló. Inténtalo de nuevo."
+  },
+  "home": {
+    "profileLoadFailed": "No se pudo cargar el perfil"
+  },
+  "settings": {
+    "appearance": "Apariencia",
+    "palette": "Paleta",
+    "themeMode": "Tema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "themeSystem": "Sistema",
+    "paletteDefault": "Predeterminada",
+    "paletteForest": "Bosque",
+    "paletteSlate": "Pizarra"
   },
   "devices": {
     "scanning": "Buscando…",
