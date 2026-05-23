@@ -1,5 +1,4 @@
 import notifee, {AndroidImportance} from '@notifee/react-native';
-import messaging from '@react-native-firebase/messaging';
 
 import {logger} from '@/utils/logger';
 
@@ -11,40 +10,25 @@ async function ensureChannel(): Promise<string> {
   return notifee.createChannel({id: CHANNEL_ID, name: 'Default', importance: AndroidImportance.HIGH});
 }
 
+// Notifee handles local notifications. For FCM delivery, install
+// @react-native-firebase/app + @react-native-firebase/messaging, drop in
+// google-services.json / GoogleService-Info.plist, and wire messaging() into
+// getToken() and onMessage() below (see README "Enabling FCM").
 export const notifeeService: PushService = {
   async init() {
     try {
       await ensureChannel();
-      await messaging().requestPermission();
+      await notifee.requestPermission();
     } catch (e) {
       logger.warn('push init failed', e);
     }
   },
 
   async getToken() {
-    try {
-      const token = await messaging().getToken();
-      return token ?? null;
-    } catch (e) {
-      logger.warn('getToken failed', e);
-      return null;
-    }
+    return null;
   },
 
-  onMessage(cb: (msg: PushMessage) => void) {
-    const unsub = messaging().onMessage(async remote => {
-      const msg: PushMessage = {
-        title: remote.notification?.title,
-        body: remote.notification?.body,
-        data: remote.data as Record<string, string> | undefined,
-      };
-      cb(msg);
-      await notifee.displayNotification({
-        title: msg.title,
-        body: msg.body,
-        android: {channelId: CHANNEL_ID},
-      });
-    });
-    return unsub;
+  onMessage(_cb: (msg: PushMessage) => void) {
+    return () => {};
   },
 };
