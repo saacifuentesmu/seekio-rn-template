@@ -1,4 +1,7 @@
 // Single source of product config. Change values here when forking this template.
+// Per-environment values (URLs, OAuth client IDs) come from .env.* via env.
+
+import {env} from '@/config/env';
 
 export interface AppConfig {
   appName: string;
@@ -24,6 +27,8 @@ export const appConfig: AppConfig = {
     staging: 'io.seekio.rntemplate.staging',
     prod: 'io.seekio.rntemplate',
   },
+  // Fallback base URLs per flavor. API_BASE_URL in .env.* overrides these
+  // (see services/api/client.ts) — these apply only when it is unset.
   apiBaseUrls: {
     dev: 'https://api.dev.example.com',
     staging: 'https://api.staging.example.com',
@@ -35,11 +40,12 @@ export const appConfig: AppConfig = {
   featureFlags: {ble: true, maps: true, push: true},
   googleSignIn: {
     // OAuth 2.0 Web client ID from Google Cloud Console (required for ID token issuance
-    // on both Android and iOS). Leave empty to disable Google Sign-In.
-    webClientId: '',
-    // iOS-only: reversed-client-id URL scheme also needs to be added to ios/<App>/Info.plist
-    // under CFBundleURLTypes. See README.
-    iosClientId: '',
+    // on both Android and iOS). Set GOOGLE_WEB_CLIENT_ID per environment in .env.*;
+    // leave unset to disable Google Sign-In.
+    webClientId: env.GOOGLE_WEB_CLIENT_ID,
+    // iOS-only: set GOOGLE_IOS_CLIENT_ID in .env.*. The reversed-client-id URL scheme
+    // also needs to be added to ios/<App>/Info.plist under CFBundleURLTypes. See README.
+    iosClientId: env.GOOGLE_IOS_CLIENT_ID,
     // Optional: request offline access (server-side refresh token via serverAuthCode).
     offlineAccess: false,
   },

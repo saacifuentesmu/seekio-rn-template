@@ -80,3 +80,8 @@ coverage/
 .env.staging
 .env.prod
 !.env.example
+
+# Secrets — OAuth client secrets and Firebase config (consumer-provided)
+client_secret_*.json
+google-services.json
+GoogleService-Info.plist
