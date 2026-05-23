@@ -89,7 +89,7 @@ All product-specific values live in **one file**: `src/constants/appConfig.ts`.
 2. **`package.json`** - change `name`.
 3. **`app.json`** - change `name` and `displayName`.
 4. **Android `applicationId`** - `android/app/build.gradle` (`applicationId`, `namespace`).
-5. **Android Kotlin package dir** - rename `android/app/src/main/java/io/seekio/rntemplate/` and update `package` in `MainActivity.kt` and `MainApplication.kt`.
+5. **Android Kotlin package dir** - rename `android/app/src/main/java/io/seekio/rntemplate/` and update `package` in `MainActivity.kt` and `MainApplication.kt`. Also update `<string name="build_config_package">` in `android/app/src/main/res/values/strings.xml` to the new namespace — `react-native-config` uses it to locate the generated `BuildConfig` class, and silently returns empty values in JS if it's wrong.
 6. **Android flavor display names** - `productFlavors { ... resValue "string", "app_name", "..." }` in `android/app/build.gradle`.
 7. **iOS bundle IDs / display names** - `ios/Config/{Dev,Staging,Prod}.xcconfig`.
 8. **iOS schemes** - see "iOS Schemes Setup" below.

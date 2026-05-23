@@ -1,3 +1,7 @@
 <resources>
     <!-- app_name is provided per-flavor via productFlavors resValue in build.gradle. -->
+    <!-- react-native-config reads BuildConfig fields via this package name. Required when
+         applicationIdSuffix differs from namespace (flavors), otherwise the JS Config
+         object silently returns undefined for every key. -->
+    <string name="build_config_package" translatable="false">io.seekio.rntemplate</string>
 </resources>
