@@ -1,5 +1,8 @@
 import axios, {AxiosInstance} from 'axios';
-import {applyAuthTokenInterceptor, TokenRefreshRequest} from 'react-native-axios-jwt';
+import {
+  applyAuthTokenInterceptor,
+  TokenRefreshRequest,
+} from 'react-native-axios-jwt';
 
 import {env} from '@/config/env';
 import {appConfig} from '@/constants/appConfig';
@@ -19,9 +22,13 @@ function attachErrorLogging(instance: AxiosInstance, label: string): void {
     err => {
       const cfg = err?.config;
       const method = cfg?.method?.toUpperCase() ?? '?';
-      const url = cfg?.url ? `${cfg?.baseURL ?? ''}${cfg.url}` : (err?.request?.responseURL ?? '');
+      const url = cfg?.url
+        ? `${cfg?.baseURL ?? ''}${cfg.url}`
+        : err?.request?.responseURL ?? '';
       const status = err?.response?.status ?? 'no-response';
-      logger.error(`[${label}] ${method} ${url} failed: ${status} ${err?.message ?? ''}`);
+      logger.error(
+        `[${label}] ${method} ${url} failed: ${status} ${err?.message ?? ''}`,
+      );
       return Promise.reject(err);
     },
   );
@@ -47,4 +54,8 @@ const requestRefresh: TokenRefreshRequest = async (refreshToken: string) => {
   };
 };
 
-applyAuthTokenInterceptor(api, {requestRefresh, header: 'Authorization', headerPrefix: 'Bearer '});
+applyAuthTokenInterceptor(api, {
+  requestRefresh,
+  header: 'Authorization',
+  headerPrefix: 'Bearer ',
+});

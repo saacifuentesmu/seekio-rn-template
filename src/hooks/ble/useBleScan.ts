@@ -23,7 +23,9 @@ export function useBleScan() {
     setDevices([]);
     setScanning(true);
     const manager = getBleManager();
-    const filter = appConfig.bleServiceUuids.length ? appConfig.bleServiceUuids : null;
+    const filter = appConfig.bleServiceUuids.length
+      ? appConfig.bleServiceUuids
+      : null;
     manager.startDeviceScan(filter, null, (err, device) => {
       if (err) {
         logger.warn('scan error', err);
@@ -32,7 +34,9 @@ export function useBleScan() {
         return;
       }
       if (!device) return;
-      setDevices(prev => (prev.some(d => d.id === device.id) ? prev : [...prev, device]));
+      setDevices(prev =>
+        prev.some(d => d.id === device.id) ? prev : [...prev, device],
+      );
     });
   }, [ensure]);
 

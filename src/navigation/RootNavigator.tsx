@@ -1,13 +1,13 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 
-import {SplashView} from '@/components/UI/SplashView';
-import {useSessionRestore} from '@/hooks/auth/useSessionRestore';
-import {useSessionStore} from '@/store/sessionStore';
-
 import {AppStack} from './AppStack';
 import {AuthStack} from './AuthStack';
 import {RootStackParamList} from './types';
+
+import {SplashView} from '@/components/UI/SplashView';
+import {useSessionRestore} from '@/hooks/auth/useSessionRestore';
+import {useSessionStore} from '@/store/sessionStore';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 

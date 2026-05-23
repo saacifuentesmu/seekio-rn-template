@@ -26,7 +26,10 @@ export function useSessionRestore() {
         useSessionStore.getState().setSession(user);
         logger.info('[session-restore] session restored');
       } catch (err) {
-        logger.warn('[session-restore] validation failed, clearing session:', err);
+        logger.warn(
+          '[session-restore] validation failed, clearing session:',
+          err,
+        );
         try {
           await endSession();
         } catch (clearErr) {

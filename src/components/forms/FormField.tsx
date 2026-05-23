@@ -13,8 +13,13 @@ interface Props<T extends FieldValues> {
 }
 
 export function FormField<T extends FieldValues>(props: Props<T>) {
-  const {control, formState: {errors}} = useFormContext<T>();
-  const errorMessage = (errors as Record<string, {message?: string} | undefined>)[props.name]?.message;
+  const {
+    control,
+    formState: {errors},
+  } = useFormContext<T>();
+  const errorMessage = (
+    errors as Record<string, {message?: string} | undefined>
+  )[props.name]?.message;
   return (
     <Controller
       control={control}

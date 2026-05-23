@@ -1,4 +1,7 @@
-import {GoogleSignin, statusCodes} from '@react-native-google-signin/google-signin';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 import {appConfig} from '@/constants/appConfig';
 import {logger} from '@/utils/logger';
@@ -12,7 +15,9 @@ export interface GoogleSignInResult {
 export function configureGoogleSignIn(): void {
   const {webClientId, iosClientId, offlineAccess} = appConfig.googleSignIn;
   if (!webClientId) {
-    logger.warn('Google Sign-In not configured: appConfig.googleSignIn.webClientId is empty');
+    logger.warn(
+      'Google Sign-In not configured: appConfig.googleSignIn.webClientId is empty',
+    );
     return;
   }
   GoogleSignin.configure({
@@ -29,7 +34,10 @@ export async function signInWithGoogle(): Promise<GoogleSignInResult | null> {
     // RNGoogleSignin 11.x returns {idToken, user: {email, name, ...}} at the top level
     // (no `data` wrapper). Read defensively to tolerate either shape.
     const payload = (result as {data?: unknown}).data ?? result;
-    const {idToken, user} = payload as {idToken: string | null; user: {email: string; name: string | null}};
+    const {idToken, user} = payload as {
+      idToken: string | null;
+      user: {email: string; name: string | null};
+    };
     if (!idToken) {
       throw new Error('Google Sign-In returned no idToken');
     }

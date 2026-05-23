@@ -21,11 +21,17 @@ interface ForgotPasswordForm {
 export const ForgotPasswordScreen: React.FC = () => {
   const {t} = useTranslation();
   const {palette, spacing, typography} = useTheme();
-  const nav = useNavigation<NativeStackNavigationProp<AuthStackParamList, 'ForgotPassword'>>();
+  const nav =
+    useNavigation<
+      NativeStackNavigationProp<AuthStackParamList, 'ForgotPassword'>
+    >();
   const forgot = useForgotPassword();
 
   const schema = yup.object({
-    email: yup.string().required(t('auth.emailRequired')).email(t('auth.emailInvalid')),
+    email: yup
+      .string()
+      .required(t('auth.emailRequired'))
+      .email(t('auth.emailInvalid')),
   });
 
   const methods = useForm<ForgotPasswordForm>({
@@ -36,16 +42,34 @@ export const ForgotPasswordScreen: React.FC = () => {
   const onSubmit = methods.handleSubmit(data => forgot.mutate(data));
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, {padding: spacing.lg, backgroundColor: palette.background}]}>
-      <Text style={[typography.h1, {color: palette.text, marginBottom: spacing.lg}]}>{t('screens.forgotPassword')}</Text>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        {padding: spacing.lg, backgroundColor: palette.background},
+      ]}>
+      <Text
+        style={[
+          typography.h1,
+          {color: palette.text, marginBottom: spacing.lg},
+        ]}>
+        {t('screens.forgotPassword')}
+      </Text>
 
       {forgot.isSuccess ? (
         <>
-          <Text style={[typography.body, {color: palette.text, marginBottom: spacing.lg}]}>
+          <Text
+            style={[
+              typography.body,
+              {color: palette.text, marginBottom: spacing.lg},
+            ]}>
             {t('auth.resetLinkSent')}
           </Text>
-          <Pressable onPress={() => nav.navigate('Login')} style={styles.linkRow}>
-            <Text style={[typography.body, {color: palette.primary}]}>{t('auth.backToSignIn')}</Text>
+          <Pressable
+            onPress={() => nav.navigate('Login')}
+            style={styles.linkRow}>
+            <Text style={[typography.body, {color: palette.primary}]}>
+              {t('auth.backToSignIn')}
+            </Text>
           </Pressable>
         </>
       ) : (
@@ -59,12 +83,22 @@ export const ForgotPasswordScreen: React.FC = () => {
             />
           </FormProvider>
           {forgot.isError ? (
-            <Text style={{color: palette.error, marginBottom: spacing.md}}>{toErrorMessage(forgot.error)}</Text>
+            <Text style={{color: palette.error, marginBottom: spacing.md}}>
+              {toErrorMessage(forgot.error)}
+            </Text>
           ) : null}
-          <Button title={t('auth.sendResetLink')} onPress={onSubmit} loading={forgot.isPending} />
+          <Button
+            title={t('auth.sendResetLink')}
+            onPress={onSubmit}
+            loading={forgot.isPending}
+          />
 
-          <Pressable onPress={() => nav.navigate('Login')} style={[styles.linkRow, {marginTop: spacing.lg}]}>
-            <Text style={[typography.body, {color: palette.primary}]}>{t('auth.backToSignIn')}</Text>
+          <Pressable
+            onPress={() => nav.navigate('Login')}
+            style={[styles.linkRow, {marginTop: spacing.lg}]}>
+            <Text style={[typography.body, {color: palette.primary}]}>
+              {t('auth.backToSignIn')}
+            </Text>
           </Pressable>
         </>
       )}
@@ -74,5 +108,9 @@ export const ForgotPasswordScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {flexGrow: 1, justifyContent: 'center'},
-  linkRow: {flexDirection: 'row', justifyContent: 'center', alignItems: 'center'},
+  linkRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });

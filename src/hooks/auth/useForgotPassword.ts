@@ -11,8 +11,13 @@ interface ForgotPasswordResponse {
   ok: boolean;
 }
 
-async function forgotPasswordRequest(input: ForgotPasswordInput): Promise<ForgotPasswordResponse> {
-  const res = await apiPublic.post<ForgotPasswordResponse>('/auth/forgot-password', input);
+async function forgotPasswordRequest(
+  input: ForgotPasswordInput,
+): Promise<ForgotPasswordResponse> {
+  const res = await apiPublic.post<ForgotPasswordResponse>(
+    '/auth/forgot-password',
+    input,
+  );
   return res.data;
 }
 

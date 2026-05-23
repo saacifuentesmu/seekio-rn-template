@@ -1,5 +1,11 @@
 import React from 'react';
-import {ActivityIndicator, Pressable, StyleSheet, Text, ViewStyle} from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  ViewStyle,
+} from 'react-native';
 
 import {useTheme} from '@/theme/ThemeProvider';
 
@@ -12,7 +18,14 @@ interface Props {
   style?: ViewStyle;
 }
 
-export const Button: React.FC<Props> = ({title, onPress, loading, disabled, variant = 'primary', style}) => {
+export const Button: React.FC<Props> = ({
+  title,
+  onPress,
+  loading,
+  disabled,
+  variant = 'primary',
+  style,
+}) => {
   const {palette, spacing, typography} = useTheme();
   const isDisabled = disabled || loading;
   const bg = variant === 'primary' ? palette.primary : palette.surface;
@@ -24,10 +37,19 @@ export const Button: React.FC<Props> = ({title, onPress, loading, disabled, vari
       disabled={isDisabled}
       style={[
         styles.base,
-        {backgroundColor: bg, paddingHorizontal: spacing.lg, paddingVertical: spacing.md, opacity: isDisabled ? 0.5 : 1},
+        {
+          backgroundColor: bg,
+          paddingHorizontal: spacing.lg,
+          paddingVertical: spacing.md,
+          opacity: isDisabled ? 0.5 : 1,
+        },
         style,
       ]}>
-      {loading ? <ActivityIndicator color={fg} /> : <Text style={[typography.button, {color: fg}]}>{title}</Text>}
+      {loading ? (
+        <ActivityIndicator color={fg} />
+      ) : (
+        <Text style={[typography.button, {color: fg}]}>{title}</Text>
+      )}
     </Pressable>
   );
 };

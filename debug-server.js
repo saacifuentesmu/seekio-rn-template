@@ -23,7 +23,11 @@ const express = require('express');
 const app = express();
 app.use(express.json());
 
-const FAKE_USER = {id: 'debug-user-1', email: 'debug@example.com', name: 'Debug User'};
+const FAKE_USER = {
+  id: 'debug-user-1',
+  email: 'debug@example.com',
+  name: 'Debug User',
+};
 
 const b64url = obj => Buffer.from(JSON.stringify(obj)).toString('base64url');
 
@@ -42,19 +46,26 @@ const fakeTokens = (sub = FAKE_USER.id) => ({
 });
 
 app.use((req, _res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path}`, req.body);
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} ${req.path}`,
+    req.body,
+  );
   next();
 });
 
 app.post('/auth/login', (req, res) => {
   const {email, password} = req.body || {};
-  if (!email || !password) return res.status(400).json({error: 'email and password required'});
+  if (!email || !password) {
+    return res.status(400).json({error: 'email and password required'});
+  }
   res.json({user: {...FAKE_USER, email}, ...fakeTokens()});
 });
 
 app.post('/auth/register', (req, res) => {
   const {email, password} = req.body || {};
-  if (!email || !password) return res.status(400).json({error: 'email and password required'});
+  if (!email || !password) {
+    return res.status(400).json({error: 'email and password required'});
+  }
   res.json({user: {...FAKE_USER, email}, ...fakeTokens()});
 });
 
@@ -66,7 +77,9 @@ app.post('/auth/google', (req, res) => {
 
 app.post('/auth/refresh', (req, res) => {
   const {refreshToken} = req.body || {};
-  if (!refreshToken) return res.status(400).json({error: 'refreshToken required'});
+  if (!refreshToken) {
+    return res.status(400).json({error: 'refreshToken required'});
+  }
   res.json(fakeTokens());
 });
 
@@ -79,7 +92,9 @@ app.post('/auth/forgot-password', (req, res) => {
 
 app.get('/me', (req, res) => {
   const auth = req.header('Authorization');
-  if (!auth || !auth.trim()) return res.status(401).json({error: 'unauthorized'});
+  if (!auth || !auth.trim()) {
+    return res.status(401).json({error: 'unauthorized'});
+  }
   res.json({user: FAKE_USER});
 });
 
@@ -88,5 +103,7 @@ app.listen(PORT, () => {
   console.log(`debug-server listening on port ${PORT} (all interfaces)`);
   console.log(`  Android emulator:    API_BASE_URL=http://10.0.2.2:${PORT}`);
   console.log(`  iOS simulator:       API_BASE_URL=http://localhost:${PORT}`);
-  console.log(`  Physical device:     API_BASE_URL=http://<your-LAN-IP>:${PORT}  (same wifi)`);
+  console.log(
+    `  Physical device:     API_BASE_URL=http://<your-LAN-IP>:${PORT}  (same wifi)`,
+  );
 });

@@ -21,13 +21,30 @@ export const DeviceDetailScreen: React.FC = () => {
   }, [connect, disconnect]);
 
   return (
-    <View style={[styles.container, {backgroundColor: palette.background, padding: spacing.lg}]}>
+    <View
+      style={[
+        styles.container,
+        {backgroundColor: palette.background, padding: spacing.lg},
+      ]}>
       <Text style={[typography.h2, {color: palette.text}]}>{deviceId}</Text>
-      <Text style={[typography.body, {color: palette.textMuted, marginTop: spacing.sm}]}>
+      <Text
+        style={[
+          typography.body,
+          {color: palette.textMuted, marginTop: spacing.sm},
+        ]}>
         {connected ? 'Connected' : 'Connecting…'}
       </Text>
-      {error ? <Text style={{color: palette.error, marginTop: spacing.sm}}>{error}</Text> : null}
-      <Button title="Disconnect" onPress={disconnect} variant="secondary" style={{marginTop: spacing.lg}} />
+      {error ? (
+        <Text style={{color: palette.error, marginTop: spacing.sm}}>
+          {error}
+        </Text>
+      ) : null}
+      <Button
+        title="Disconnect"
+        onPress={disconnect}
+        variant="secondary"
+        style={{marginTop: spacing.lg}}
+      />
     </View>
   );
 };

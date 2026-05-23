@@ -2,11 +2,11 @@ import i18n from 'i18next';
 import {initReactI18next} from 'react-i18next';
 import * as RNLocalize from 'react-native-localize';
 
-import {appConfig} from '@/constants/appConfig';
-import {useSettingsStore} from '@/store/settingsStore';
-
 import en from './locales/en.json';
 import es from './locales/es.json';
+
+import {appConfig} from '@/constants/appConfig';
+import {useSettingsStore} from '@/store/settingsStore';
 
 const resources = {
   en: {translation: en},
@@ -25,17 +25,15 @@ function resolveLocale(): string {
 
 export function initI18n(): void {
   if (i18n.isInitialized) return;
-  i18n
-    .use(initReactI18next)
-    .init({
-      resources,
-      lng: resolveLocale(),
-      fallbackLng: appConfig.defaultLocale,
-      load: 'languageOnly',
-      interpolation: {escapeValue: false},
-      // v3 avoids the Intl.PluralRules requirement Hermes can't fully satisfy.
-      compatibilityJSON: 'v3',
-    });
+  i18n.use(initReactI18next).init({
+    resources,
+    lng: resolveLocale(),
+    fallbackLng: appConfig.defaultLocale,
+    load: 'languageOnly',
+    interpolation: {escapeValue: false},
+    // v3 avoids the Intl.PluralRules requirement Hermes can't fully satisfy.
+    compatibilityJSON: 'v3',
+  });
 
   // The persisted locale rehydrates asynchronously; re-apply once it lands,
   // and follow any later changes from setLocale.
