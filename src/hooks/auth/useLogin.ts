@@ -1,32 +1,13 @@
 import {useMutation} from '@tanstack/react-query';
 
-import {apiPublic} from '@/services/api/client';
-import {startSession} from '@/services/auth/session';
+import {getAuthProvider} from '@/services/backend';
 import {logger} from '@/utils/logger';
 
-interface LoginInput {
-  email: string;
-  password: string;
-}
-
-interface LoginResponse {
-  user: {id: string; email?: string; name?: string};
-  accessToken: string;
-  refreshToken: string;
-}
-
-// Stub mutation. Replace endpoint to match your backend.
-async function loginRequest(input: LoginInput): Promise<LoginResponse> {
-  const res = await apiPublic.post<LoginResponse>('/auth/login', input);
-  return res.data;
-}
-
 export function useLogin() {
+  const auth = getAuthProvider();
   return useMutation({
-    mutationFn: loginRequest,
-    onSuccess: async data => {
-      await startSession(data.user, data.accessToken, data.refreshToken);
-    },
+    mutationFn: (input: {email: string; password: string}) =>
+      auth.signIn(input),
     onError: err => {
       logger.error('[useLogin] failed:', err);
     },

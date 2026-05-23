@@ -1,29 +1,12 @@
 import {useMutation} from '@tanstack/react-query';
 
-import {apiPublic} from '@/services/api/client';
+import {getAuthProvider} from '@/services/backend';
 import {logger} from '@/utils/logger';
 
-interface ForgotPasswordInput {
-  email: string;
-}
-
-interface ForgotPasswordResponse {
-  ok: boolean;
-}
-
-async function forgotPasswordRequest(
-  input: ForgotPasswordInput,
-): Promise<ForgotPasswordResponse> {
-  const res = await apiPublic.post<ForgotPasswordResponse>(
-    '/auth/forgot-password',
-    input,
-  );
-  return res.data;
-}
-
 export function useForgotPassword() {
+  const auth = getAuthProvider();
   return useMutation({
-    mutationFn: forgotPasswordRequest,
+    mutationFn: (input: {email: string}) => auth.forgotPassword(input),
     onError: err => {
       logger.error('[useForgotPassword] failed:', err);
     },

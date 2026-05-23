@@ -1,21 +1,12 @@
 import {useQuery} from '@tanstack/react-query';
 
-import {api} from '@/services/api/client';
-import {SessionUser} from '@/store/sessionStore';
-
-interface MeResponse {
-  user: SessionUser;
-}
-
-async function fetchMe(): Promise<SessionUser> {
-  const res = await api.get<MeResponse>('/me');
-  return res.data.user;
-}
+import {getAuthProvider} from '@/services/backend';
 
 export function useCurrentUser() {
+  const auth = getAuthProvider();
   return useQuery({
     queryKey: ['me'],
-    queryFn: fetchMe,
+    queryFn: () => auth.getCurrentUser(),
     staleTime: 5 * 60 * 1000,
   });
 }

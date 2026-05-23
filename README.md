@@ -67,6 +67,23 @@ src/
   App.tsx                       # composes all providers
 ```
 
+## Backend architecture (Ports & Adapters)
+
+The backend lives behind interfaces so a product can target any backend (REST,
+Firebase, Azure, AWS) by writing one adapter and flipping one config value —
+consumers never change. See [`../BACKEND_PORTS.md`](../BACKEND_PORTS.md) for the
+full pattern.
+
+- **Ports** (interfaces): `src/services/backend/ports/`
+- **Adapters** (impls): `src/services/backend/adapters/` — `RestAuthProvider`
+  (default) + `FirebaseAuthProvider` (stub)
+- **Composition root**: `src/services/backend/index.ts` — `getAuthProvider()`
+  selects the adapter from `appConfig.backend.auth`
+- **Switch backend**: set `appConfig.backend.auth` (`'rest' | 'firebase'`)
+
+The **auth** path is the reference implementation. `DataStore`, `FileStore`, and
+`DevicePairing` ports follow the same shape (not yet extracted).
+
 ## Customizing for a New Product
 
 All product-specific values live in **one file**: `src/constants/appConfig.ts`.

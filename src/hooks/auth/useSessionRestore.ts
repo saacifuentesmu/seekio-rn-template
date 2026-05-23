@@ -1,7 +1,6 @@
 import {useEffect, useState} from 'react';
 
-import {endSession, validateSession} from '@/services/auth/session';
-import {getAccessToken} from '@/services/auth/tokens';
+import {getAuthProvider} from '@/services/backend';
 import {useSessionStore} from '@/store/sessionStore';
 import {logger} from '@/utils/logger';
 
@@ -12,29 +11,18 @@ export function useSessionRestore() {
 
   useEffect(() => {
     let cancelled = false;
+    const auth = getAuthProvider();
 
     (async () => {
       try {
-        const token = await getAccessToken();
-        if (!token) {
-          logger.info('[session-restore] no token, skipping');
-          return;
-        }
-        logger.info('[session-restore] token found, validating');
-        const user = await validateSession();
+        const user = await auth.restoreSession();
         if (cancelled) return;
-        useSessionStore.getState().setSession(user);
-        logger.info('[session-restore] session restored');
-      } catch (err) {
-        logger.warn(
-          '[session-restore] validation failed, clearing session:',
-          err,
-        );
-        try {
-          await endSession();
-        } catch (clearErr) {
-          logger.warn('[session-restore] endSession failed:', clearErr);
+        if (user) {
+          useSessionStore.getState().setSession(user);
+          logger.info('[session-restore] session restored');
         }
+      } catch (err) {
+        logger.warn('[session-restore] restore failed:', err);
       } finally {
         if (!cancelled) setStatus('ready');
       }

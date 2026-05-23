@@ -1,19 +1,13 @@
 import {useMutation} from '@tanstack/react-query';
 
-import {loginWithGoogle} from '@/services/auth/session';
-import {signInWithGoogle} from '@/services/auth/googleSignIn';
+import {getAuthProvider} from '@/services/backend';
 import {logger} from '@/utils/logger';
 
-async function googleSignInFlow(): Promise<{cancelled: boolean}> {
-  const result = await signInWithGoogle();
-  if (!result) return {cancelled: true};
-  await loginWithGoogle(result.idToken);
-  return {cancelled: false};
-}
-
 export function useGoogleLogin() {
+  const auth = getAuthProvider();
   const mutation = useMutation({
-    mutationFn: googleSignInFlow,
+    // Resolves to the user, or null when the user cancels.
+    mutationFn: () => auth.signInWithGoogle(),
     onError: err => {
       logger.error('[useGoogleLogin] failed:', err);
     },
