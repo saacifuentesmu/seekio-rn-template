@@ -8,11 +8,13 @@ import {ErrorBoundary} from '@/components/UI/ErrorBoundary';
 import {initI18n} from '@/i18n';
 import {RootNavigator} from '@/navigation/RootNavigator';
 import {queryClient, queryPersister} from '@/services/api/queryClient';
+import {configureGoogleSignIn} from '@/services/auth/googleSignIn';
 import {initSentry} from '@/services/sentry/init';
 import {ThemeProvider} from '@/theme/ThemeProvider';
 
 initSentry();
 initI18n();
+configureGoogleSignIn();
 
 export const App: React.FC = () => {
   useEffect(() => {

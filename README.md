@@ -79,6 +79,7 @@ All product-specific values live in **one file**: `src/constants/appConfig.ts`.
 | Default locale | `defaultLocale` | `'en'` |
 | Supported locales | `supportedLocales` | `['en', 'es']` |
 | Feature flags | `featureFlags.{ble,maps,push}` | `true` |
+| Google Sign-In | `googleSignIn.{webClientId,iosClientId,offlineAccess}` | `''` (disabled) |
 
 ### Full rebrand checklist
 
@@ -148,6 +149,30 @@ Drop `google-services.json` into `android/app/` and `GoogleService-Info.plist` i
 **Telemetry** - `services/sentry/init.ts` skips Sentry when `SENTRY_DSN` is empty or in `__DEV__`. Add the DSN to `.env.prod` (and run a release build) to enable.
 
 **Flavors** - three environments end-to-end: env files, Android product flavors, iOS xcconfigs.
+
+### Google Sign-In (optional)
+
+Disabled by default (empty `webClientId` in `appConfig.googleSignIn`). To enable:
+
+1. **Google Cloud Console** -> APIs & Services -> Credentials. Create OAuth 2.0 client IDs:
+   - **Web application** - copy its client ID into `appConfig.googleSignIn.webClientId`. (This is the ID token audience; required on both platforms.)
+   - **Android** - add one per flavor. Package name = the flavor's applicationId (e.g. `io.seekio.rntemplate.dev`). SHA-1 = your debug keystore (`./gradlew signingReport` from `android/`) for dev/staging; release keystore for prod.
+   - **iOS** - copy its client ID into `appConfig.googleSignIn.iosClientId`. Note its *reversed* form (looks like `com.googleusercontent.apps.123-abc`).
+
+2. **iOS only** - add the reversed client ID to `ios/SeekioRnTemplate/Info.plist`:
+   ```xml
+   <key>CFBundleURLTypes</key>
+   <array>
+     <dict>
+       <key>CFBundleURLSchemes</key>
+       <array>
+         <string>com.googleusercontent.apps.YOUR-REVERSED-ID</string>
+       </array>
+     </dict>
+   </array>
+   ```
+
+3. **Backend** - implement `POST /auth/google` accepting `{idToken: string}`, verifying it against Google's JWKS (audience = your `webClientId`), and returning `{accessToken, refreshToken, user}` in the same shape as your email/password login.
 
 ## Quick Reference: Files to Touch
 

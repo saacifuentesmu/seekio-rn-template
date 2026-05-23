@@ -20,7 +20,10 @@
     "password": "Contraseña",
     "emailRequired": "El correo es obligatorio",
     "emailInvalid": "Introduce un correo válido",
-    "passwordRequired": "La contraseña es obligatoria"
+    "passwordRequired": "La contraseña es obligatoria",
+    "or": "o",
+    "continueWithGoogle": "Continuar con Google",
+    "googleSignInFailed": "Inicio de sesión con Google falló. Inténtalo de nuevo."
   },
   "devices": {
     "scanning": "Buscando…",
