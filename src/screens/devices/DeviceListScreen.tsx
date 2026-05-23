@@ -42,11 +42,8 @@ export const DeviceListScreen: React.FC = () => {
           <Text
             style={[
               typography.body,
-              {
-                color: palette.textMuted,
-                textAlign: 'center',
-                marginTop: spacing.lg,
-              },
+              styles.emptyText,
+              {color: palette.textMuted, marginTop: spacing.lg},
             ]}>
             {scanning ? t('devices.scanning') : t('devices.empty')}
           </Text>
@@ -74,4 +71,5 @@ export const DeviceListScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {flex: 1},
   row: {borderBottomWidth: 1, borderRadius: 6},
+  emptyText: {textAlign: 'center'},
 });
