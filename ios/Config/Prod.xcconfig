@@ -1,0 +1,5 @@
+#include "Common.xcconfig"
+
+PRODUCT_BUNDLE_IDENTIFIER = io.seekio.rntemplate
+DISPLAY_NAME = Seekio RN
+ENVFILE = .env.prod
