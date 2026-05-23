@@ -1,0 +1,3 @@
+// Shared values for all environments. Per-env files include this.
+PRODUCT_NAME = SeekioRnTemplate
+DEVELOPMENT_TEAM =
