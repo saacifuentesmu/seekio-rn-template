@@ -49,7 +49,11 @@
     "themeSystem": "Sistema",
     "paletteDefault": "Predeterminada",
     "paletteForest": "Bosque",
-    "paletteSlate": "Pizarra"
+    "paletteSlate": "Pizarra",
+    "language": "Idioma",
+    "languageSystem": "Sistema",
+    "languageEn": "Inglés",
+    "languageEs": "Español"
   },
   "devices": {
     "scanning": "Buscando…",

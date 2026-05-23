@@ -9,9 +9,11 @@ import {PaletteName, palettes} from '@/theme/palette';
 import {useTheme} from '@/theme/ThemeProvider';
 
 type ThemeMode = 'light' | 'dark' | 'system';
+type LocaleChoice = 'system' | 'en' | 'es';
 
 const PALETTE_NAMES: PaletteName[] = ['default', 'forest', 'slate'];
 const THEME_MODES: ThemeMode[] = ['light', 'dark', 'system'];
+const LOCALE_CHOICES: LocaleChoice[] = ['system', 'en', 'es'];
 
 export const SettingsScreen: React.FC = () => {
   const {t} = useTranslation();
@@ -19,8 +21,12 @@ export const SettingsScreen: React.FC = () => {
   const {user, signOut} = useAuth();
   const paletteName = useSettingsStore(s => s.paletteName);
   const themeMode = useSettingsStore(s => s.themeMode);
+  const locale = useSettingsStore(s => s.locale);
   const setPaletteName = useSettingsStore(s => s.setPaletteName);
   const setThemeMode = useSettingsStore(s => s.setThemeMode);
+  const setLocale = useSettingsStore(s => s.setLocale);
+
+  const localeChoice: LocaleChoice = locale === 'en' || locale === 'es' ? locale : 'system';
 
   const paletteLabel = (name: PaletteName): string => {
     if (name === 'default') return t('settings.paletteDefault');
@@ -32,6 +38,12 @@ export const SettingsScreen: React.FC = () => {
     if (mode === 'light') return t('settings.themeLight');
     if (mode === 'dark') return t('settings.themeDark');
     return t('settings.themeSystem');
+  };
+
+  const localeLabel = (choice: LocaleChoice): string => {
+    if (choice === 'en') return t('settings.languageEn');
+    if (choice === 'es') return t('settings.languageEs');
+    return t('settings.languageSystem');
   };
 
   return (
@@ -98,6 +110,31 @@ export const SettingsScreen: React.FC = () => {
                   {color: selected ? '#fff' : palette.text, textAlign: 'center'},
                 ]}>
                 {themeLabel(mode)}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+
+      <Text style={[typography.caption, {color: palette.textMuted, marginTop: spacing.md, marginBottom: spacing.sm}]}>
+        {t('settings.language')}
+      </Text>
+      <View style={[styles.segment, {borderColor: palette.border}]}>
+        {LOCALE_CHOICES.map(choice => {
+          const selected = choice === localeChoice;
+          return (
+            <Pressable
+              key={choice}
+              onPress={() => setLocale(choice === 'system' ? null : choice)}
+              style={[
+                styles.segmentItem,
+                {
+                  paddingVertical: spacing.md,
+                  backgroundColor: selected ? palette.primary : 'transparent',
+                },
+              ]}>
+              <Text style={[typography.body, {color: selected ? '#fff' : palette.text, textAlign: 'center'}]}>
+                {localeLabel(choice)}
               </Text>
             </Pressable>
           );
