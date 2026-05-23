@@ -50,7 +50,7 @@ export const DeviceListScreen: React.FC = () => {
         }
         renderItem={({item}) => (
           <Pressable
-            onPress={() => nav.navigate('DeviceDetail', {deviceId: item.id})}
+            onPress={() => nav.navigate('DeviceDetail', {device: item})}
             style={[
               styles.row,
               {borderColor: palette.border, padding: spacing.md},

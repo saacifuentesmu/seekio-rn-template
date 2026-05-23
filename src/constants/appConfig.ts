@@ -14,7 +14,11 @@ export interface AppConfig {
   // Which backend adapter each capability uses. Selected at startup by the
   // composition root in services/backend/. Add capabilities (data, files, ...)
   // here as their ports land.
-  backend: {auth: 'rest' | 'firebase'};
+  backend: {
+    auth: 'rest' | 'firebase';
+    data: 'rest' | 'firebase';
+    files: 'rest' | 'firebase';
+  };
   featureFlags: {ble: boolean; maps: boolean; push: boolean};
   googleSignIn: {
     webClientId: string;
@@ -41,7 +45,7 @@ export const appConfig: AppConfig = {
   bleServiceUuids: [],
   defaultLocale: 'en',
   supportedLocales: ['en', 'es'],
-  backend: {auth: 'rest'},
+  backend: {auth: 'rest', data: 'rest', files: 'rest'},
   featureFlags: {ble: true, maps: true, push: true},
   googleSignIn: {
     // OAuth 2.0 Web client ID from Google Cloud Console (required for ID token issuance

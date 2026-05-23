@@ -1,5 +1,7 @@
 import {NavigatorScreenParams} from '@react-navigation/native';
 
+import {PairedDevice} from '@/services/backend/ports/devicePairing';
+
 export type AuthStackParamList = {
   Login: undefined;
   SignUp: undefined;
@@ -8,7 +10,7 @@ export type AuthStackParamList = {
 
 export type DevicesStackParamList = {
   DeviceList: undefined;
-  DeviceDetail: {deviceId: string};
+  DeviceDetail: {device: PairedDevice};
 };
 
 export type AppTabParamList = {
