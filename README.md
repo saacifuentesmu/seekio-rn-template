@@ -1,79 +1,159 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Seekio RN Template
 
-# Getting Started
+> Generic React Native starter for IoT companion apps. Structured as a **starting point**: product-specific values live in **one file** (`src/constants/appConfig.ts`) so a new product is a rebrand, not a rewrite.
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+## Stack
 
-## Step 1: Start the Metro Server
+| Layer | Choice |
+|-------|--------|
+| Navigation | `@react-navigation/native` (native-stack + bottom-tabs) |
+| State (server) | TanStack Query (+ AsyncStorage persister) |
+| State (client) | Zustand |
+| Networking | Axios + `react-native-axios-jwt` (refresh) |
+| Secure storage | `react-native-sensitive-info` |
+| Storage | `@react-native-async-storage/async-storage` |
+| BLE | `react-native-ble-plx` (singleton manager + scan/connect hooks) |
+| Maps / Geo | `react-native-maps`, `@react-native-community/geolocation` |
+| Push | `@notifee/react-native` + `@react-native-firebase/messaging` |
+| i18n | `i18next` + `react-i18next` + `react-native-localize` (EN, ES) |
+| Telemetry | `@sentry/react-native` (skipped in dev / when DSN empty) |
+| Forms | `react-hook-form` + `yup` |
+| Flavors | Android product flavors (dev/staging/prod) + iOS xcconfigs |
+| Testing | Jest + `react-test-renderer` |
+| Linting | ESLint (`@react-native` + `eslint-plugin-import`) |
+| Path aliases | `babel-plugin-module-resolver` (`@/*` -> `src/*`) |
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
-
-To start Metro, run the following command from the _root_ of your React Native project:
-
-```bash
-# using npm
-npm start
-
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Start your Application
-
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
-
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
+## Setup
 
 ```bash
-# using npm
-npm run ios
+yarn install
 
-# OR using Yarn
-yarn ios
+# Copy and edit env per environment
+cp .env.example .env.dev
+cp .env.example .env.staging
+cp .env.example .env.prod
+
+# iOS
+cd ios && pod install && cd ..
+
+# Run
+yarn android:dev          # or android:staging, android:prod
+yarn ios:dev              # or ios:staging, ios:prod (requires Xcode schemes - see below)
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## Project Structure
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+```
+src/
+  constants/appConfig.ts        # SINGLE rebrand file
+  config/env.ts                 # typed wrapper over react-native-config
+  navigation/                   # RootNavigator + Auth/App stacks + types
+  screens/                      # auth, home, devices, settings
+  components/                   # UI primitives + form helpers
+  hooks/                        # auth, ble, location, permissions
+  services/
+    api/                        # axios client + TanStack Query client
+    auth/                       # tokens (secure) + session helpers
+    ble/                        # BleManager singleton
+    push/                       # PushService interface + Notifee impl
+    sentry/                     # init (no-op in dev / when DSN empty)
+    storage/                    # AsyncStorage wrapper
+  store/                        # zustand stores (session, settings)
+  i18n/                         # i18next init + en/es resources
+  theme/                        # palette + spacing + typography + provider
+  utils/                        # logger, errors
+  App.tsx                       # composes all providers
+```
 
-## Step 3: Modifying your App
+## Customizing for a New Product
 
-Now that you have successfully run the app, let's modify it.
+All product-specific values live in **one file**: `src/constants/appConfig.ts`.
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+| What | Field | Example |
+|------|-------|---------|
+| App name | `appName` | `'Seekio RN Template'` |
+| Company | `companyName` | `'Seekio'` |
+| Bundle IDs | `bundleIds.{dev,staging,prod}` | `'io.seekio.rntemplate.dev'` |
+| API base URLs | `apiBaseUrls.{dev,staging,prod}` | `'https://api.example.com'` |
+| BLE filter | `bleServiceUuids` | `['0000180a-...']` |
+| Default locale | `defaultLocale` | `'en'` |
+| Supported locales | `supportedLocales` | `['en', 'es']` |
+| Feature flags | `featureFlags.{ble,maps,push}` | `true` |
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+### Full rebrand checklist
 
-## Congratulations! :tada:
+1. **`src/constants/appConfig.ts`** - update every value.
+2. **`package.json`** - change `name`.
+3. **`app.json`** - change `name` and `displayName`.
+4. **Android `applicationId`** - `android/app/build.gradle` (`applicationId`, `namespace`).
+5. **Android Kotlin package dir** - rename `android/app/src/main/java/io/seekio/rntemplate/` and update `package` in `MainActivity.kt` and `MainApplication.kt`.
+6. **Android flavor display names** - `productFlavors { ... resValue "string", "app_name", "..." }` in `android/app/build.gradle`.
+7. **iOS bundle IDs / display names** - `ios/Config/{Dev,Staging,Prod}.xcconfig`.
+8. **iOS schemes** - see "iOS Schemes Setup" below.
+9. **App icons & splash** - add your assets under `android/app/src/main/res/mipmap-*/` and the iOS asset catalog; configure `react-native-splash-screen`. (Not bundled - left to the consumer.)
+10. **Firebase config** - drop `android/app/google-services.json` and `ios/GoogleService-Info.plist` (not bundled - set up your own Firebase project).
+11. **i18n** - edit `src/i18n/locales/en.json` and `es.json` for your domain vocabulary.
+12. **Storage namespaces** - rename `'seekio.query-cache'` in `src/services/api/queryClient.ts` and `'seekio.auth'` in `src/services/auth/tokens.ts` so forks don't share cache or keychain entries on the same device.
+13. **Search-and-replace** the placeholder name:
+    ```bash
+    grep -rl 'SeekioRnTemplate' . --exclude-dir=node_modules --exclude-dir=ios/Pods | xargs sed -i 's/SeekioRnTemplate/YourApp/g'
+    ```
 
-You've successfully run and modified your React Native App. :partying_face:
+## iOS Schemes Setup (manual)
 
-### Now what?
+The `.pbxproj` is fragile, so schemes are not pre-configured. After `pod install`:
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+1. Open `ios/SeekioRnTemplate.xcworkspace` in Xcode.
+2. **Product -> Scheme -> Manage Schemes...** -> duplicate the default scheme three times: `SeekioRnTemplate-Dev`, `SeekioRnTemplate-Staging`, `SeekioRnTemplate-Prod`.
+3. **Project -> Info -> Configurations**: add three configurations (`Debug-Dev`, `Debug-Staging`, `Debug-Prod`, plus `Release-*` if needed) and point each at the matching `ios/Config/{Dev,Staging,Prod}.xcconfig`.
+4. For each duplicated scheme, set its **Run** build configuration to the matching `Debug-*`.
+5. In **Build Settings**, leave `PRODUCT_BUNDLE_IDENTIFIER`, `DISPLAY_NAME`, and `ENVFILE` to inherit from xcconfig.
+6. In `Info.plist`, set `CFBundleDisplayName` to `$(DISPLAY_NAME)` and `CFBundleIdentifier` to `$(PRODUCT_BUNDLE_IDENTIFIER)`.
 
-# Troubleshooting
+The `yarn ios:dev` / `yarn ios:staging` / `yarn ios:prod` scripts launch via those schemes.
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## Android Flavors
 
-# Learn More
+Pre-wired in `android/app/build.gradle`:
 
-To learn more about React Native, take a look at the following resources:
+| Flavor | applicationId | Display name |
+|--------|---------------|--------------|
+| dev | `io.seekio.rntemplate.dev` | Seekio RN (Dev) |
+| staging | `io.seekio.rntemplate.staging` | Seekio RN (Staging) |
+| prod | `io.seekio.rntemplate` | Seekio RN |
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Build:
+
+```bash
+yarn android:dev               # devDebug
+yarn android:apk:staging       # stagingRelease APK
+```
+
+## Capabilities
+
+**Auth + JWT** - `services/api/client.ts` wires axios with `react-native-axios-jwt` for automatic refresh. Tokens are stored in the keychain / encrypted SharedPreferences via `services/auth/tokens.ts`. The login mutation lives in `hooks/auth/useLogin.ts` - replace the endpoint to match your backend.
+
+**BLE** - `services/ble/bleManager.ts` exposes a lazy singleton. `hooks/ble/useBleScan.ts` returns a list of devices filtered by `appConfig.bleServiceUuids`. `hooks/ble/useBleDevice.ts` handles connect / disconnect / characteristic monitoring - characteristic UUIDs are passed as arguments, so the hook stays product-agnostic.
+
+**Maps** - `react-native-maps` is installed. Add Google Maps API keys per the package README (`AndroidManifest.xml` meta-data + iOS AppDelegate) when you wire up a map view.
+
+**Push** - `services/push/notifeeService.ts` implements the generic `PushService` interface using FCM + Notifee. Not wired into `App.tsx` by default — import and call `pushService.init()` once you've added `google-services.json` / `GoogleService-Info.plist` and configured Firebase. Without those, the Firebase native module will fail to register at build time.
+
+**Telemetry** - `services/sentry/init.ts` skips Sentry when `SENTRY_DSN` is empty or in `__DEV__`. Add the DSN to `.env.prod` (and run a release build) to enable.
+
+**Flavors** - three environments end-to-end: env files, Android product flavors, iOS xcconfigs.
+
+## Quick Reference: Files to Touch
+
+| What | File(s) |
+|------|---------|
+| All product config | `src/constants/appConfig.ts` |
+| Theme / palette | `src/theme/palette.ts` |
+| All UI strings | `src/i18n/locales/{en,es}.json` |
+| Environment secrets | `.env.{dev,staging,prod}` |
+| Android app ID / flavors | `android/app/build.gradle` |
+| Android package dir | `android/app/src/main/java/io/seekio/rntemplate/` |
+| iOS bundle IDs / display names | `ios/Config/{Dev,Staging,Prod}.xcconfig` |
+| Firebase config | `android/app/google-services.json`, `ios/GoogleService-Info.plist` (consumer-provided) |
+| Navigation | `src/navigation/RootNavigator.tsx` |
+| Add a feature | `src/screens/`, `src/hooks/`, `src/services/` |
