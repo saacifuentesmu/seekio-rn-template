@@ -99,7 +99,8 @@ export const SignUpScreen: React.FC = () => {
       <Pressable
         onPress={() => nav.navigate('Login')}
         style={[styles.linkRow, {marginTop: spacing.lg}]}>
-        <Text style={[typography.body, {color: palette.text, opacity: 0.6}]}>
+        <Text
+          style={[typography.body, styles.mutedText, {color: palette.text}]}>
           {t('auth.alreadyHaveAccount')}{' '}
         </Text>
         <Text style={[typography.body, {color: palette.primary}]}>
@@ -116,11 +117,8 @@ export const SignUpScreen: React.FC = () => {
             <Text
               style={[
                 typography.body,
-                {
-                  color: palette.text,
-                  marginHorizontal: spacing.md,
-                  opacity: 0.6,
-                },
+                styles.mutedText,
+                {color: palette.text, marginHorizontal: spacing.md},
               ]}>
               {t('auth.or')}
             </Text>
@@ -149,6 +147,7 @@ export const SignUpScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {flexGrow: 1, justifyContent: 'center'},
+  mutedText: {opacity: 0.6},
   linkRow: {
     flexDirection: 'row',
     justifyContent: 'center',

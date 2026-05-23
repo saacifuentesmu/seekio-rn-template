@@ -14,7 +14,7 @@
 | Storage | `@react-native-async-storage/async-storage` |
 | BLE | `react-native-ble-plx` (singleton manager + scan/connect hooks) |
 | Maps / Geo | `react-native-maps`, `@react-native-community/geolocation` |
-| Push | `@notifee/react-native` + `@react-native-firebase/messaging` |
+| Push | `@notifee/react-native` (local notifications; FCM via `@react-native-firebase/messaging` is opt-in — see Push below) |
 | i18n | `i18next` + `react-i18next` + `react-native-localize` (EN, ES) |
 | Telemetry | `@sentry/react-native` (skipped in dev / when DSN empty) |
 | Forms | `react-hook-form` + `yup` |

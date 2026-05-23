@@ -103,7 +103,12 @@ export const SettingsScreen: React.FC = () => {
                   {backgroundColor: preview, marginRight: spacing.md},
                 ]}
               />
-              <Text style={[typography.body, {color: palette.text, flex: 1}]}>
+              <Text
+                style={[
+                  typography.body,
+                  styles.flexLabel,
+                  {color: palette.text},
+                ]}>
                 {paletteLabel(name)}
               </Text>
               {selected ? (
@@ -136,18 +141,14 @@ export const SettingsScreen: React.FC = () => {
               onPress={() => setThemeMode(mode)}
               style={[
                 styles.segmentItem,
-                {
-                  paddingVertical: spacing.md,
-                  backgroundColor: selected ? palette.primary : 'transparent',
-                },
+                {paddingVertical: spacing.md},
+                selected ? {backgroundColor: palette.primary} : null,
               ]}>
               <Text
                 style={[
                   typography.body,
-                  {
-                    color: selected ? '#fff' : palette.text,
-                    textAlign: 'center',
-                  },
+                  styles.segmentLabel,
+                  selected ? styles.segmentLabelActive : {color: palette.text},
                 ]}>
                 {themeLabel(mode)}
               </Text>
@@ -176,18 +177,14 @@ export const SettingsScreen: React.FC = () => {
               onPress={() => setLocale(choice === 'system' ? null : choice)}
               style={[
                 styles.segmentItem,
-                {
-                  paddingVertical: spacing.md,
-                  backgroundColor: selected ? palette.primary : 'transparent',
-                },
+                {paddingVertical: spacing.md},
+                selected ? {backgroundColor: palette.primary} : null,
               ]}>
               <Text
                 style={[
                   typography.body,
-                  {
-                    color: selected ? '#fff' : palette.text,
-                    textAlign: 'center',
-                  },
+                  styles.segmentLabel,
+                  selected ? styles.segmentLabelActive : {color: palette.text},
                 ]}>
                 {localeLabel(choice)}
               </Text>
@@ -215,6 +212,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   swatch: {width: 24, height: 24, borderRadius: 12},
+  flexLabel: {flex: 1},
+  segmentLabel: {textAlign: 'center'},
+  segmentLabelActive: {color: '#fff', textAlign: 'center'},
   segment: {
     flexDirection: 'row',
     borderWidth: 1,

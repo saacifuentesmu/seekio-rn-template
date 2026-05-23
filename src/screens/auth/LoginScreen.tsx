@@ -91,7 +91,8 @@ export const LoginScreen: React.FC = () => {
       <Pressable
         onPress={() => nav.navigate('SignUp')}
         style={[styles.linkRow, {marginTop: spacing.md}]}>
-        <Text style={[typography.body, {color: palette.text, opacity: 0.6}]}>
+        <Text
+          style={[typography.body, styles.mutedText, {color: palette.text}]}>
           {t('auth.dontHaveAccount')}{' '}
         </Text>
         <Text style={[typography.body, {color: palette.primary}]}>
@@ -108,11 +109,8 @@ export const LoginScreen: React.FC = () => {
             <Text
               style={[
                 typography.body,
-                {
-                  color: palette.text,
-                  marginHorizontal: spacing.md,
-                  opacity: 0.6,
-                },
+                styles.mutedText,
+                {color: palette.text, marginHorizontal: spacing.md},
               ]}>
               {t('auth.or')}
             </Text>
@@ -143,6 +141,7 @@ const styles = StyleSheet.create({
   container: {flexGrow: 1, justifyContent: 'center'},
   dividerRow: {flexDirection: 'row', alignItems: 'center'},
   dividerLine: {flex: 1, height: StyleSheet.hairlineWidth},
+  mutedText: {opacity: 0.6},
   linkRow: {
     flexDirection: 'row',
     justifyContent: 'center',

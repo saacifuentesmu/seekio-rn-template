@@ -8,6 +8,12 @@ require Pod::Executable.execute_command('node', ['-p',
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
 
+# Silence deprecation/documentation warnings from third-party pods (glog,
+# SocketRocket, RxBluetoothKit, React-Native internals). These are upstream
+# Apple-SDK/library deprecations we don't control; suppressing them keeps the
+# build log readable. Remove to surface pod warnings during dependency upgrades.
+inhibit_all_warnings!
+
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
