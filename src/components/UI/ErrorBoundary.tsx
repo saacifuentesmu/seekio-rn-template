@@ -5,7 +5,10 @@ interface State {
   error: Error | null;
 }
 
-export class ErrorBoundary extends React.Component<React.PropsWithChildren, State> {
+export class ErrorBoundary extends React.Component<
+  React.PropsWithChildren,
+  State
+> {
   state: State = {error: null};
 
   static getDerivedStateFromError(error: Error): State {
@@ -30,7 +33,12 @@ export class ErrorBoundary extends React.Component<React.PropsWithChildren, Stat
 }
 
 const styles = StyleSheet.create({
-  container: {flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24},
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 24,
+  },
   title: {fontSize: 18, fontWeight: '600', marginBottom: 8},
   msg: {fontSize: 14, color: '#64748B', textAlign: 'center'},
 });

@@ -15,7 +15,10 @@ export interface PaletteColors {
   warning: string;
 }
 
-export const palettes: Record<PaletteName, Record<ColorScheme, PaletteColors>> = {
+export const palettes: Record<
+  PaletteName,
+  Record<ColorScheme, PaletteColors>
+> = {
   default: {
     light: {
       primary: '#2563EB',

@@ -1,7 +1,14 @@
-import {clearAuthTokens, getAccessToken as libGetAccess, setAuthTokens} from 'react-native-axios-jwt';
+import {
+  clearAuthTokens,
+  getAccessToken as libGetAccess,
+  setAuthTokens,
+} from 'react-native-axios-jwt';
 import SInfo from 'react-native-sensitive-info';
 
-const opts = {sharedPreferencesName: 'seekio.auth', keychainService: 'seekio.auth'};
+const opts = {
+  sharedPreferencesName: 'seekio.auth',
+  keychainService: 'seekio.auth',
+};
 const ACCESS_KEY = 'accessToken';
 const REFRESH_KEY = 'refreshToken';
 
@@ -21,7 +28,10 @@ export async function setRefreshToken(refreshToken: string): Promise<void> {
   await setAuthTokens({accessToken: access, refreshToken});
 }
 
-export async function setTokens(accessToken: string, refreshToken: string): Promise<void> {
+export async function setTokens(
+  accessToken: string,
+  refreshToken: string,
+): Promise<void> {
   await SInfo.setItem(ACCESS_KEY, accessToken, opts);
   await SInfo.setItem(REFRESH_KEY, refreshToken, opts);
   await setAuthTokens({accessToken, refreshToken});

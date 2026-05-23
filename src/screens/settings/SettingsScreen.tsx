@@ -26,7 +26,8 @@ export const SettingsScreen: React.FC = () => {
   const setThemeMode = useSettingsStore(s => s.setThemeMode);
   const setLocale = useSettingsStore(s => s.setLocale);
 
-  const localeChoice: LocaleChoice = locale === 'en' || locale === 'es' ? locale : 'system';
+  const localeChoice: LocaleChoice =
+    locale === 'en' || locale === 'es' ? locale : 'system';
 
   const paletteLabel = (name: PaletteName): string => {
     if (name === 'default') return t('settings.paletteDefault');
@@ -50,16 +51,33 @@ export const SettingsScreen: React.FC = () => {
     <ScrollView
       style={{backgroundColor: palette.background}}
       contentContainerStyle={[styles.container, {padding: spacing.lg}]}>
-      <Text style={[typography.h1, {color: palette.text}]}>{t('screens.settings')}</Text>
+      <Text style={[typography.h1, {color: palette.text}]}>
+        {t('screens.settings')}
+      </Text>
       {user ? (
-        <Text style={[typography.body, {color: palette.textMuted, marginTop: spacing.sm}]}>
+        <Text
+          style={[
+            typography.body,
+            {color: palette.textMuted, marginTop: spacing.sm},
+          ]}>
           {user.email ?? user.id}
         </Text>
       ) : null}
 
-      <Text style={[typography.h2, {color: palette.text, marginTop: spacing.xl}]}>{t('settings.appearance')}</Text>
+      <Text
+        style={[typography.h2, {color: palette.text, marginTop: spacing.xl}]}>
+        {t('settings.appearance')}
+      </Text>
 
-      <Text style={[typography.caption, {color: palette.textMuted, marginTop: spacing.md, marginBottom: spacing.sm}]}>
+      <Text
+        style={[
+          typography.caption,
+          {
+            color: palette.textMuted,
+            marginTop: spacing.md,
+            marginBottom: spacing.sm,
+          },
+        ]}>
         {t('settings.palette')}
       </Text>
       <View>
@@ -79,15 +97,34 @@ export const SettingsScreen: React.FC = () => {
                   marginBottom: spacing.sm,
                 },
               ]}>
-              <View style={[styles.swatch, {backgroundColor: preview, marginRight: spacing.md}]} />
-              <Text style={[typography.body, {color: palette.text, flex: 1}]}>{paletteLabel(name)}</Text>
-              {selected ? <Text style={[typography.body, {color: palette.primary}]}>{'✓'}</Text> : null}
+              <View
+                style={[
+                  styles.swatch,
+                  {backgroundColor: preview, marginRight: spacing.md},
+                ]}
+              />
+              <Text style={[typography.body, {color: palette.text, flex: 1}]}>
+                {paletteLabel(name)}
+              </Text>
+              {selected ? (
+                <Text style={[typography.body, {color: palette.primary}]}>
+                  {'✓'}
+                </Text>
+              ) : null}
             </Pressable>
           );
         })}
       </View>
 
-      <Text style={[typography.caption, {color: palette.textMuted, marginTop: spacing.md, marginBottom: spacing.sm}]}>
+      <Text
+        style={[
+          typography.caption,
+          {
+            color: palette.textMuted,
+            marginTop: spacing.md,
+            marginBottom: spacing.sm,
+          },
+        ]}>
         {t('settings.themeMode')}
       </Text>
       <View style={[styles.segment, {borderColor: palette.border}]}>
@@ -107,7 +144,10 @@ export const SettingsScreen: React.FC = () => {
               <Text
                 style={[
                   typography.body,
-                  {color: selected ? '#fff' : palette.text, textAlign: 'center'},
+                  {
+                    color: selected ? '#fff' : palette.text,
+                    textAlign: 'center',
+                  },
                 ]}>
                 {themeLabel(mode)}
               </Text>
@@ -116,7 +156,15 @@ export const SettingsScreen: React.FC = () => {
         })}
       </View>
 
-      <Text style={[typography.caption, {color: palette.textMuted, marginTop: spacing.md, marginBottom: spacing.sm}]}>
+      <Text
+        style={[
+          typography.caption,
+          {
+            color: palette.textMuted,
+            marginTop: spacing.md,
+            marginBottom: spacing.sm,
+          },
+        ]}>
         {t('settings.language')}
       </Text>
       <View style={[styles.segment, {borderColor: palette.border}]}>
@@ -133,7 +181,14 @@ export const SettingsScreen: React.FC = () => {
                   backgroundColor: selected ? palette.primary : 'transparent',
                 },
               ]}>
-              <Text style={[typography.body, {color: selected ? '#fff' : palette.text, textAlign: 'center'}]}>
+              <Text
+                style={[
+                  typography.body,
+                  {
+                    color: selected ? '#fff' : palette.text,
+                    textAlign: 'center',
+                  },
+                ]}>
                 {localeLabel(choice)}
               </Text>
             </Pressable>

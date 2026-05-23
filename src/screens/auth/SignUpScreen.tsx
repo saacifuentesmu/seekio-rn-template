@@ -25,13 +25,20 @@ interface SignUpForm {
 export const SignUpScreen: React.FC = () => {
   const {t} = useTranslation();
   const {palette, spacing, typography} = useTheme();
-  const nav = useNavigation<NativeStackNavigationProp<AuthStackParamList, 'SignUp'>>();
+  const nav =
+    useNavigation<NativeStackNavigationProp<AuthStackParamList, 'SignUp'>>();
   const signUp = useSignUp();
   const google = useGoogleLogin();
 
   const schema = yup.object({
-    email: yup.string().required(t('auth.emailRequired')).email(t('auth.emailInvalid')),
-    password: yup.string().required(t('auth.passwordRequired')).min(8, t('auth.passwordMinLength')),
+    email: yup
+      .string()
+      .required(t('auth.emailRequired'))
+      .email(t('auth.emailInvalid')),
+    password: yup
+      .string()
+      .required(t('auth.passwordRequired'))
+      .min(8, t('auth.passwordMinLength')),
     passwordConfirm: yup
       .string()
       .required(t('auth.passwordRequired'))
@@ -43,11 +50,23 @@ export const SignUpScreen: React.FC = () => {
     defaultValues: {email: '', password: '', passwordConfirm: ''},
   });
 
-  const onSubmit = methods.handleSubmit(data => signUp.mutate({email: data.email, password: data.password}));
+  const onSubmit = methods.handleSubmit(data =>
+    signUp.mutate({email: data.email, password: data.password}),
+  );
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, {padding: spacing.lg, backgroundColor: palette.background}]}>
-      <Text style={[typography.h1, {color: palette.text, marginBottom: spacing.lg}]}>{t('appName')}</Text>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        {padding: spacing.lg, backgroundColor: palette.background},
+      ]}>
+      <Text
+        style={[
+          typography.h1,
+          {color: palette.text, marginBottom: spacing.lg},
+        ]}>
+        {t('appName')}
+      </Text>
       <FormProvider {...methods}>
         <FormField<SignUpForm>
           name="email"
@@ -67,25 +86,47 @@ export const SignUpScreen: React.FC = () => {
         />
       </FormProvider>
       {signUp.isError ? (
-        <Text style={{color: palette.error, marginBottom: spacing.md}}>{toErrorMessage(signUp.error)}</Text>
+        <Text style={{color: palette.error, marginBottom: spacing.md}}>
+          {toErrorMessage(signUp.error)}
+        </Text>
       ) : null}
-      <Button title={t('auth.signUp')} onPress={onSubmit} loading={signUp.isPending} />
+      <Button
+        title={t('auth.signUp')}
+        onPress={onSubmit}
+        loading={signUp.isPending}
+      />
 
-      <Pressable onPress={() => nav.navigate('Login')} style={[styles.linkRow, {marginTop: spacing.lg}]}>
+      <Pressable
+        onPress={() => nav.navigate('Login')}
+        style={[styles.linkRow, {marginTop: spacing.lg}]}>
         <Text style={[typography.body, {color: palette.text, opacity: 0.6}]}>
           {t('auth.alreadyHaveAccount')}{' '}
         </Text>
-        <Text style={[typography.body, {color: palette.primary}]}>{t('common.signIn')}</Text>
+        <Text style={[typography.body, {color: palette.primary}]}>
+          {t('common.signIn')}
+        </Text>
       </Pressable>
 
       {appConfig.googleSignIn.webClientId ? (
         <>
           <View style={[styles.dividerRow, {marginVertical: spacing.lg}]}>
-            <View style={[styles.dividerLine, {backgroundColor: palette.border}]} />
-            <Text style={[typography.body, {color: palette.text, marginHorizontal: spacing.md, opacity: 0.6}]}>
+            <View
+              style={[styles.dividerLine, {backgroundColor: palette.border}]}
+            />
+            <Text
+              style={[
+                typography.body,
+                {
+                  color: palette.text,
+                  marginHorizontal: spacing.md,
+                  opacity: 0.6,
+                },
+              ]}>
               {t('auth.or')}
             </Text>
-            <View style={[styles.dividerLine, {backgroundColor: palette.border}]} />
+            <View
+              style={[styles.dividerLine, {backgroundColor: palette.border}]}
+            />
           </View>
 
           <Button
@@ -96,7 +137,9 @@ export const SignUpScreen: React.FC = () => {
             disabled={google.isPending}
           />
           {google.error ? (
-            <Text style={{color: palette.error, marginTop: spacing.sm}}>{t('auth.googleSignInFailed')}</Text>
+            <Text style={{color: palette.error, marginTop: spacing.sm}}>
+              {t('auth.googleSignInFailed')}
+            </Text>
           ) : null}
         </>
       ) : null}
@@ -106,7 +149,11 @@ export const SignUpScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {flexGrow: 1, justifyContent: 'center'},
-  linkRow: {flexDirection: 'row', justifyContent: 'center', alignItems: 'center'},
+  linkRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   dividerRow: {flexDirection: 'row', alignItems: 'center'},
   dividerLine: {flex: 1, height: StyleSheet.hairlineWidth},
 });

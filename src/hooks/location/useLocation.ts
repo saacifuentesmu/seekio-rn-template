@@ -1,4 +1,6 @@
-import Geolocation, {GeoPosition} from '@react-native-community/geolocation';
+import Geolocation, {
+  GeolocationResponse,
+} from '@react-native-community/geolocation';
 import {useCallback, useEffect, useState} from 'react';
 
 import {usePermissions} from '@/hooks/permissions/usePermissions';
@@ -6,7 +8,7 @@ import {logger} from '@/utils/logger';
 
 export function useLocation(watch = false) {
   const {ensure} = usePermissions();
-  const [position, setPosition] = useState<GeoPosition | null>(null);
+  const [position, setPosition] = useState<GeolocationResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const getCurrent = useCallback(async () => {
@@ -15,7 +17,7 @@ export function useLocation(watch = false) {
       setError('Location permission denied');
       return null;
     }
-    return new Promise<GeoPosition | null>(resolve => {
+    return new Promise<GeolocationResponse | null>(resolve => {
       Geolocation.getCurrentPosition(
         pos => {
           setPosition(pos);
@@ -36,7 +38,10 @@ export function useLocation(watch = false) {
     (async () => {
       const ok = await ensure('location');
       if (!ok) return;
-      watchId = Geolocation.watchPosition(pos => setPosition(pos), err => setError(err.message));
+      watchId = Geolocation.watchPosition(
+        pos => setPosition(pos),
+        err => setError(err.message),
+      );
     })();
     return () => {
       if (watchId != null) Geolocation.clearWatch(watchId);

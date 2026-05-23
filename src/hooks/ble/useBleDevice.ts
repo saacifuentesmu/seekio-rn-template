@@ -41,24 +41,34 @@ export function useBleDevice(deviceId: string | null) {
   }, [device]);
 
   const monitor = useCallback(
-    ({serviceUuid, characteristicUuid}: MonitorArgs, onValue: (base64: string) => void) => {
+    (
+      {serviceUuid, characteristicUuid}: MonitorArgs,
+      onValue: (base64: string) => void,
+    ) => {
       if (!device) return () => {};
-      const sub = device.monitorCharacteristicForService(serviceUuid, characteristicUuid, (err, ch) => {
-        if (err) {
-          logger.warn('monitor err', err);
-          return;
-        }
-        if (ch?.value) onValue(ch.value);
-      });
+      const sub = device.monitorCharacteristicForService(
+        serviceUuid,
+        characteristicUuid,
+        (err, ch) => {
+          if (err) {
+            logger.warn('monitor err', err);
+            return;
+          }
+          if (ch?.value) onValue(ch.value);
+        },
+      );
       monitorRef.current = sub;
       return () => sub.remove();
     },
     [device],
   );
 
-  useEffect(() => () => {
-    monitorRef.current?.remove();
-  }, []);
+  useEffect(
+    () => () => {
+      monitorRef.current?.remove();
+    },
+    [],
+  );
 
   return {device, connected, error, connect, disconnect, monitor};
 }

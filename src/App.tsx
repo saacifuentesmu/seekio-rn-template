@@ -23,7 +23,9 @@ export const App: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <PersistQueryClientProvider client={queryClient} persistOptions={{persister: queryPersister}}>
+      <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{persister: queryPersister}}>
         <SafeAreaProvider>
           <ThemeProvider>
             <NavigationContainer>

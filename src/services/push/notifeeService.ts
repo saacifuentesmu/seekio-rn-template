@@ -1,13 +1,17 @@
 import notifee, {AndroidImportance} from '@notifee/react-native';
 
-import {logger} from '@/utils/logger';
-
 import {PushMessage, PushService} from './pushService';
+
+import {logger} from '@/utils/logger';
 
 const CHANNEL_ID = 'default';
 
 async function ensureChannel(): Promise<string> {
-  return notifee.createChannel({id: CHANNEL_ID, name: 'Default', importance: AndroidImportance.HIGH});
+  return notifee.createChannel({
+    id: CHANNEL_ID,
+    name: 'Default',
+    importance: AndroidImportance.HIGH,
+  });
 }
 
 // Notifee handles local notifications. For FCM delivery, install

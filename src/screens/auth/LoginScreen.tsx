@@ -24,12 +24,16 @@ interface LoginForm {
 export const LoginScreen: React.FC = () => {
   const {t} = useTranslation();
   const {palette, spacing, typography} = useTheme();
-  const nav = useNavigation<NativeStackNavigationProp<AuthStackParamList, 'Login'>>();
+  const nav =
+    useNavigation<NativeStackNavigationProp<AuthStackParamList, 'Login'>>();
   const login = useLogin();
   const google = useGoogleLogin();
 
   const schema = yup.object({
-    email: yup.string().required(t('auth.emailRequired')).email(t('auth.emailInvalid')),
+    email: yup
+      .string()
+      .required(t('auth.emailRequired'))
+      .email(t('auth.emailInvalid')),
     password: yup.string().required(t('auth.passwordRequired')),
   });
 
@@ -41,8 +45,18 @@ export const LoginScreen: React.FC = () => {
   const onSubmit = methods.handleSubmit(data => login.mutate(data));
 
   return (
-    <ScrollView contentContainerStyle={[styles.container, {padding: spacing.lg, backgroundColor: palette.background}]}>
-      <Text style={[typography.h1, {color: palette.text, marginBottom: spacing.lg}]}>{t('appName')}</Text>
+    <ScrollView
+      contentContainerStyle={[
+        styles.container,
+        {padding: spacing.lg, backgroundColor: palette.background},
+      ]}>
+      <Text
+        style={[
+          typography.h1,
+          {color: palette.text, marginBottom: spacing.lg},
+        ]}>
+        {t('appName')}
+      </Text>
       <FormProvider {...methods}>
         <FormField<LoginForm>
           name="email"
@@ -56,29 +70,55 @@ export const LoginScreen: React.FC = () => {
           secureTextEntry
         />
       </FormProvider>
-      <Pressable onPress={() => nav.navigate('ForgotPassword')} style={[styles.linkRow, {marginBottom: spacing.md}]}>
-        <Text style={[typography.body, {color: palette.primary}]}>{t('auth.forgotPassword')}</Text>
+      <Pressable
+        onPress={() => nav.navigate('ForgotPassword')}
+        style={[styles.linkRow, {marginBottom: spacing.md}]}>
+        <Text style={[typography.body, {color: palette.primary}]}>
+          {t('auth.forgotPassword')}
+        </Text>
       </Pressable>
       {login.isError ? (
-        <Text style={{color: palette.error, marginBottom: spacing.md}}>{toErrorMessage(login.error)}</Text>
+        <Text style={{color: palette.error, marginBottom: spacing.md}}>
+          {toErrorMessage(login.error)}
+        </Text>
       ) : null}
-      <Button title={t('common.signIn')} onPress={onSubmit} loading={login.isPending} />
+      <Button
+        title={t('common.signIn')}
+        onPress={onSubmit}
+        loading={login.isPending}
+      />
 
-      <Pressable onPress={() => nav.navigate('SignUp')} style={[styles.linkRow, {marginTop: spacing.md}]}>
+      <Pressable
+        onPress={() => nav.navigate('SignUp')}
+        style={[styles.linkRow, {marginTop: spacing.md}]}>
         <Text style={[typography.body, {color: palette.text, opacity: 0.6}]}>
           {t('auth.dontHaveAccount')}{' '}
         </Text>
-        <Text style={[typography.body, {color: palette.primary}]}>{t('auth.signUp')}</Text>
+        <Text style={[typography.body, {color: palette.primary}]}>
+          {t('auth.signUp')}
+        </Text>
       </Pressable>
 
       {appConfig.googleSignIn.webClientId ? (
         <>
           <View style={[styles.dividerRow, {marginVertical: spacing.lg}]}>
-            <View style={[styles.dividerLine, {backgroundColor: palette.border}]} />
-            <Text style={[typography.body, {color: palette.text, marginHorizontal: spacing.md, opacity: 0.6}]}>
+            <View
+              style={[styles.dividerLine, {backgroundColor: palette.border}]}
+            />
+            <Text
+              style={[
+                typography.body,
+                {
+                  color: palette.text,
+                  marginHorizontal: spacing.md,
+                  opacity: 0.6,
+                },
+              ]}>
               {t('auth.or')}
             </Text>
-            <View style={[styles.dividerLine, {backgroundColor: palette.border}]} />
+            <View
+              style={[styles.dividerLine, {backgroundColor: palette.border}]}
+            />
           </View>
 
           <Button
@@ -89,7 +129,9 @@ export const LoginScreen: React.FC = () => {
             disabled={google.isPending}
           />
           {google.error ? (
-            <Text style={{color: palette.error, marginTop: spacing.sm}}>{t('auth.googleSignInFailed')}</Text>
+            <Text style={{color: palette.error, marginTop: spacing.sm}}>
+              {t('auth.googleSignInFailed')}
+            </Text>
           ) : null}
         </>
       ) : null}
@@ -101,5 +143,9 @@ const styles = StyleSheet.create({
   container: {flexGrow: 1, justifyContent: 'center'},
   dividerRow: {flexDirection: 'row', alignItems: 'center'},
   dividerLine: {flex: 1, height: StyleSheet.hairlineWidth},
-  linkRow: {flexDirection: 'row', justifyContent: 'center', alignItems: 'center'},
+  linkRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
