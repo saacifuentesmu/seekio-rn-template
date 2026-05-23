@@ -72,3 +72,46 @@ jobs:
           name: app-dev-debug
           path: android/app/build/outputs/apk/dev/debug/*.apk
           if-no-files-found: error
+
+  ios:
+    name: iOS compile check
+    # macOS runners cost ~10x CI minutes. Builds the default scheme only —
+    # the per-flavor schemes (SeekioRnTemplate-Dev, etc.) are a manual Xcode
+    # setup (see README "iOS Schemes Setup") not yet committed to the project.
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Write placeholder .env.dev
+        run: |
+          cat > .env.dev <<'EOF'
+          ENV=dev
+          API_BASE_URL=https://api.example.com
+          SENTRY_DSN=
+          GOOGLE_WEB_CLIENT_ID=
+          GOOGLE_IOS_CLIENT_ID=
+          EOF
+
+      - name: Pod install
+        run: pod install
+        working-directory: ios
+
+      - name: Xcodebuild (simulator, no signing)
+        run: |
+          xcodebuild \
+            -workspace SeekioRnTemplate.xcworkspace \
+            -scheme SeekioRnTemplate \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+        working-directory: ios
