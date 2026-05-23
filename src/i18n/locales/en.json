@@ -1,0 +1,31 @@
+{
+  "appName": "Seekio RN Template",
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "loading": "Loading…",
+    "retry": "Retry"
+  },
+  "screens": {
+    "login": "Sign In",
+    "home": "Home",
+    "devices": "Devices",
+    "deviceDetail": "Device",
+    "settings": "Settings"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Enter a valid email",
+    "passwordRequired": "Password is required"
+  },
+  "devices": {
+    "scanning": "Scanning…",
+    "startScan": "Start Scan",
+    "stopScan": "Stop Scan",
+    "empty": "No devices found"
+  }
+}
