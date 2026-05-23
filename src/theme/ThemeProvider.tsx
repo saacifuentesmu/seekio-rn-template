@@ -11,12 +11,14 @@ export interface Theme {
   palette: Palette;
   spacing: Spacing;
   typography: Typography;
+  scheme: ColorScheme;
 }
 
 const defaultTheme: Theme = {
   palette: palettes.default.light,
   spacing,
   typography,
+  scheme: 'light',
 };
 
 const ThemeContext = createContext<Theme>(defaultTheme);
@@ -37,7 +39,12 @@ export const ThemeProvider: React.FC<{
           ? 'dark'
           : 'light'
         : themeMode;
-    return {palette: palettes[paletteName][actual], spacing, typography};
+    return {
+      palette: palettes[paletteName][actual],
+      spacing,
+      typography,
+      scheme: actual,
+    };
   }, [theme, paletteName, themeMode, systemScheme]);
 
   return (
