@@ -49,6 +49,8 @@ app.post('/auth/refresh', (req, res) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`debug-server listening on http://localhost:${PORT}`);
-  console.log('Set appConfig.apiBaseUrls.dev = "http://10.0.2.2:3000" for Android emulator.');
+  console.log(`debug-server listening on port ${PORT} (all interfaces)`);
+  console.log(`  Android emulator:    API_BASE_URL=http://10.0.2.2:${PORT}`);
+  console.log(`  iOS simulator:       API_BASE_URL=http://localhost:${PORT}`);
+  console.log(`  Physical device:     API_BASE_URL=http://<your-LAN-IP>:${PORT}  (same wifi)`);
 });
