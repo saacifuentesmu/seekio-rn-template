@@ -4,6 +4,7 @@
 //
 // Endpoints:
 //   POST /auth/login    { email, password }   -> { user, accessToken, refreshToken }
+//   POST /auth/register { email, password }   -> { user, accessToken, refreshToken }
 //   POST /auth/google   { idToken }           -> { user, accessToken, refreshToken }
 //   POST /auth/refresh  { refreshToken }      -> { accessToken, refreshToken }
 //
@@ -30,6 +31,12 @@ app.use((req, _res, next) => {
 });
 
 app.post('/auth/login', (req, res) => {
+  const {email, password} = req.body || {};
+  if (!email || !password) return res.status(400).json({error: 'email and password required'});
+  res.json({user: {...FAKE_USER, email}, ...fakeTokens()});
+});
+
+app.post('/auth/register', (req, res) => {
   const {email, password} = req.body || {};
   if (!email || !password) return res.status(400).json({error: 'email and password required'});
   res.json({user: {...FAKE_USER, email}, ...fakeTokens()});

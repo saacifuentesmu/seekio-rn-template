@@ -3,6 +3,7 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 
 import {LoginScreen} from '@/screens/auth/LoginScreen';
+import {SignUpScreen} from '@/screens/auth/SignUpScreen';
 
 import {AuthStackParamList} from './types';
 
@@ -13,6 +14,7 @@ export const AuthStack: React.FC = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Login" component={LoginScreen} options={{title: t('screens.login')}} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} options={{title: t('screens.signUp')}} />
     </Stack.Navigator>
   );
 };

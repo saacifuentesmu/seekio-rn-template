@@ -10,6 +10,7 @@
   },
   "screens": {
     "login": "Sign In",
+    "signUp": "Sign up",
     "home": "Home",
     "devices": "Devices",
     "deviceDetail": "Device",
@@ -18,9 +19,15 @@
   "auth": {
     "email": "Email",
     "password": "Password",
+    "passwordConfirm": "Confirm password",
     "emailRequired": "Email is required",
     "emailInvalid": "Enter a valid email",
     "passwordRequired": "Password is required",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordsMustMatch": "Passwords must match",
+    "signUp": "Sign up",
+    "alreadyHaveAccount": "Already have an account?",
+    "dontHaveAccount": "Don't have an account?",
     "or": "or",
     "continueWithGoogle": "Continue with Google",
     "googleSignInFailed": "Google Sign-In failed. Try again."
