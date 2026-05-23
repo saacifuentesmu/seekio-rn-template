@@ -137,7 +137,13 @@ yarn android:apk:staging       # stagingRelease APK
 
 **Maps** - `react-native-maps` is installed. Add Google Maps API keys per the package README (`AndroidManifest.xml` meta-data + iOS AppDelegate) when you wire up a map view.
 
-**Push** - `services/push/notifeeService.ts` implements the generic `PushService` interface using FCM + Notifee. Not wired into `App.tsx` by default — import and call `pushService.init()` once you've added `google-services.json` / `GoogleService-Info.plist` and configured Firebase. Without those, the Firebase native module will fail to register at build time.
+**Push** - `services/push/notifeeService.ts` implements the generic `PushService` interface with local notifications via Notifee. FCM is opt-in to keep the default build working without Firebase config files:
+
+```bash
+yarn add @react-native-firebase/app @react-native-firebase/messaging
+```
+
+Drop `google-services.json` into `android/app/` and `GoogleService-Info.plist` into the iOS target, then replace the stubs in `getToken()` / `onMessage()` per the comment in `notifeeService.ts`.
 
 **Telemetry** - `services/sentry/init.ts` skips Sentry when `SENTRY_DSN` is empty or in `__DEV__`. Add the DSN to `.env.prod` (and run a release build) to enable.
 
