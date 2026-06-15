@@ -71,8 +71,7 @@ src/
 
 The backend lives behind interfaces so a product can target any backend (REST,
 Firebase, Azure, AWS) by writing one adapter and flipping one config value —
-consumers never change. See [`../BACKEND_PORTS.md`](../BACKEND_PORTS.md) for the
-full pattern.
+consumers never change.
 
 - **Ports** (interfaces): `src/services/backend/ports/`
 - **Adapters** (impls): `src/services/backend/adapters/` — `RestAuthProvider`
