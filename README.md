@@ -1,6 +1,6 @@
 # Seekio RN Template
 
-> Generic React Native starter for IoT companion apps. Structured as a **starting point**: product-specific values live in **one file** (`src/constants/appConfig.ts`) so a new product is a rebrand, not a rewrite.
+> A production-shaped **starting point** for building a companion (or any) React Native app. Product-specific values live in **one file** (`src/constants/appConfig.ts`), so a new product is a rebrand, not a rewrite.
 
 ## Stack
 
